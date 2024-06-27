@@ -44,6 +44,9 @@ const Navbar = () => {
             Ulubione
           </li>
         </ul>
+          <div >
+          <Combobox />
+        </div>
       </div>
     </nav>
   );
