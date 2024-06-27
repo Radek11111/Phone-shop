@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { FaSearch } from "react-icons/fa";
+import { Combobox } from "./Combobox";
 
 const Navbar = () => {
   return (
@@ -22,7 +23,7 @@ const Navbar = () => {
         <form className="bg-slate-100 p-3 rounded-lg flex items-center">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Wyszukaj..."
             className="bg-transparent focus:outline-none w-24 sm:w-64"
           />
           <button>
