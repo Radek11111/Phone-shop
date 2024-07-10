@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { FaSearch } from "react-icons/fa";
-import { Combobox } from "./Combobox";
+
 
 const Navbar = () => {
   return (
@@ -9,8 +9,8 @@ const Navbar = () => {
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3 ">
         <Link href="/">
           <h1 className="font-bold text-sm sm:text-xl flex items-center ">
-            Duck <br />
-            <span className="text-slate-500">Store</span>
+            Phone <br />
+            <span className="text-slate-500 w-8">Store</span>
             <img
               src="/logo.png"
               className="bg-transparent"
@@ -34,19 +34,17 @@ const Navbar = () => {
           className="flex gap-4
           "
         >
-          <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
-            Strona główna
-          </li>
-          <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
-            Produkty
-          </li>
-          <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
-            Ulubione
-          </li>
+          <Link href="/">
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+              Strona główna
+            </li>
+          </Link>
+          <Link href="/favorite">
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+              Ulubione
+            </li>
+          </Link>
         </ul>
-          <div >
-          <Combobox />
-        </div>
       </div>
     </nav>
   );

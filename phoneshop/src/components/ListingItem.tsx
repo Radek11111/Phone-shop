@@ -44,7 +44,9 @@ interface Listing {
 }
 
 const fetchListings = async (): Promise<Listing[]> => {
-  const res = await fetch("https://dummyjson.com/products");
+  const res = await fetch(
+    "https://dummyjson.com/products/category/smartphones"
+  );
   const data = await res.json();
   return data.products;
 };
@@ -82,9 +84,7 @@ const ListingItems: React.FC = () => {
                   <span aria-hidden="true" className="absolute inset-0" />
                 </h2>
 
-                <p>Category: {listing.category}</p>
                 <p>Price: ${listing.price}</p>
-                <p>Rating: {listing.rating}</p>
               </div>
             </div>
           ))}
