@@ -36,12 +36,22 @@ const Navbar = () => {
         >
           <Link href="/">
             <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
-              Strona główna
+              Home
             </li>
           </Link>
           <Link href="/favorite">
             <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
-              Ulubione
+            Favorite
+            </li>
+          </Link>
+          <Link href="/signIn">
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+            Sign in
+            </li>
+          </Link>
+          <Link href="/Profile">
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+              Profile
             </li>
           </Link>
         </ul>
