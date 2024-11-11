@@ -1,8 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-import { useRouter } from "next/navigation"; // Import useRouter from next/router
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation"; 
 
 type Listing = {
   id: number;
@@ -13,26 +15,30 @@ type Listing = {
 
 const Listings = () => {
   const router = useRouter();
-  const fetchListings = async (): Promise<Listing[]> => {
-    const res = await fetch(
-      "https://dummyjson.com/products/category/smartphones"
-    );
-    const data = await res.json();
-    return data.products;
-  };
+  const [listings, setListings] = useState<Listing[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const {
-    data: listing,
-    error,
-    isLoading,
-  } = useQuery<Listing[], Error>({
-    queryKey: ["listing"],
-    queryFn: fetchListings,
-  });
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const res = await axios.get(
+          "https://dummyjson.com/products/category/smartphones"
+        );
+        setListings(res.data.products);
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchListings();
+  }, []);
 
   if (isLoading)
     return <div className="mx-auto justify-center">Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error}</div>;
 
   const handleListingClick = (id: number) => {
     router.push(`/products/${id}`);
@@ -41,7 +47,7 @@ const Listings = () => {
   return (
     <div className="mx-auto mt-0 px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 text-center">
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-        {listing?.map((listing) => (
+        {listings?.map((listing) => (
           <div
             key={listing.id}
             className="group relative text-center"

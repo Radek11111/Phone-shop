@@ -1,19 +1,15 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import { CiLogin, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function IconsGroup() {
+  const { isSignedIn } = useUser();
 
-  const { isSignedIn } = useUser()
+  const router = useRouter();
 
-  const router = useRouter()
-  console.log(
-    "Publishable Key:",
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  );
   return (
     <div>
       <Button variant="nostyle" size="icon">
