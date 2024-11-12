@@ -18,3 +18,11 @@ export type CartItem = {
   likes: string[];
   _uid: string;
 };
+
+export type Listing = {
+  id: number;
+  title: string;
+  price: number;
+  thumbnail: string;
+};
+

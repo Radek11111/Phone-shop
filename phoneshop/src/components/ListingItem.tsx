@@ -5,13 +5,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation"; 
+import {  Listing } from "@/types"
 
-type Listing = {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-};
 
 const Listings = () => {
   const router = useRouter();
