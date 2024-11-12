@@ -4,7 +4,7 @@ import React from "react";
 
 // import { neobrutalism } from "@clerk/themes";
 import { Provider } from "react-redux";
-import store from "../../store";
+import store from "@/store";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
