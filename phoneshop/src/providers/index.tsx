@@ -1,8 +1,6 @@
 "use client";
 import { ClerkProvider } from "@clerk/nextjs";
 import React from "react";
-
-// import { neobrutalism } from "@clerk/themes";
 import { Provider } from "react-redux";
 import store from "@/store";
 

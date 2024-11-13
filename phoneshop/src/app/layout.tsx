@@ -10,6 +10,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Providers from "@/providers";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
@@ -27,7 +29,12 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={recursive.className}>
-          <Providers>{children}</Providers>
+          <Providers>
+            <Navbar />
+
+            {children}
+            <Footer />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
