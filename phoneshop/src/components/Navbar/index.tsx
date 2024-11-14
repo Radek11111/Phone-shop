@@ -1,17 +1,21 @@
 "use client";
-import MaxWidthWrapper from "../MaxWidthWrapper";
+
+import Container from "../Container";
+import Row from "../Row";
 import IconsGroup from "./IconsGroup";
 import Logo from "./Logo";
+import SideBarMenu from "./SideBarMenu";
 
 const Navbar = () => {
   return (
-    <nav className="bg-slate-200 shadow-md">
-      <MaxWidthWrapper>
-        <div className="flex justify-between items-center max-w-4xl mx-auto p-3 ">
+    <nav className="bg-slate-200 shadow-md h-full">
+      <Container>
+        <Row className=" justify-between">
+          <SideBarMenu />
           <Logo />
           <IconsGroup />
-        </div>
-      </MaxWidthWrapper>
+        </Row>
+      </Container>
     </nav>
   );
 };

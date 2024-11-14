@@ -38,7 +38,7 @@ export default function IconsGroup() {
           </Button>
         ) : (
           <Button
-            className=""
+            className="hidden lg:block relative"
             variant="nostyle"
             size="icon"
             onClick={() => router.push("/sign-in")}

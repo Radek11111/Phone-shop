@@ -10,7 +10,7 @@ export default async function Layout({
 }) {
   return (
     <section className="py-10 relative h-screen">
-      <div className="overflow-x-auto  overflow-y-hidden">
+      <div className="">
         <div className="flex relative">
           <SideBarAccount/>
           <div className="flex-1">{children}</div>
