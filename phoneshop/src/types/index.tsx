@@ -19,6 +19,22 @@ export type CartItem = {
   _uid: string;
 };
 
+export type Cart = {
+  cartItems: CartItem[];
+  cartTotal: number;
+  products: Product[];
+};
+
+export type Product = {
+  _id: string;
+  name: string;
+  featured: boolean;
+  slug: string;
+  description: string;
+
+};
+
+
 export type Listing = {
   id: number;
   title: string;

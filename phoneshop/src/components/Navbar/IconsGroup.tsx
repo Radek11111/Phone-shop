@@ -4,8 +4,15 @@ import { CiLogin, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import CartBar from "./CartBar";
 
-export default function IconsGroup() {
+export default function IconsGroup({
+  openCartBar,
+  setOpenCartBar,
+}: {
+  openCartBar: boolean;
+  setOpenCartBar: (value: boolean) => void;
+}) {
   const { isSignedIn } = useUser();
 
   const router = useRouter();
@@ -18,6 +25,7 @@ export default function IconsGroup() {
         </Button>
         <Button
           id="openCart"
+          onClick={()=> setOpenCartBar(!openCartBar)}
           className="hidden lg:block relative"
           variant="nostyle"
           size="icon"
@@ -46,6 +54,7 @@ export default function IconsGroup() {
             <CiLogin size={40} />
           </Button>
         )}
+        <CartBar openCartBar={openCartBar} setOpenCartBar={setOpenCartBar} />
       </div>
     </div>
   );
