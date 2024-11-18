@@ -1,22 +1,19 @@
-
+export type Product = {
+  id: string;
+  title: string;
+  price: number;
+  quantity: number;
+  total: number;
+  discountPercentage: number;
+  discountedTotal: number;
+  thumbnail: string;
+};
 
 export type CartItem = {
-  product: string;
+  id: string;
   name: string;
-  desription: string;
-  optionBefore: number;
-  option: string;
-  slug: string;
-  sku: string;
-  shipping: string;
-  images: string[];
   price: number;
-  priceBefore: number;
-  qty: number;
-  stock: number;
-  brand: string;
-  likes: string[];
-  _uid: string;
+  amount: number;
 };
 
 export type Cart = {
@@ -25,20 +22,9 @@ export type Cart = {
   products: Product[];
 };
 
-export type Product = {
-  _id: string;
-  name: string;
-  featured: boolean;
-  slug: string;
-  description: string;
-
-};
-
-
 export type Listing = {
   id: number;
   title: string;
   price: number;
   thumbnail: string;
 };
-
