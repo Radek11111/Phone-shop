@@ -6,6 +6,7 @@ import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
 import { addToCart } from "@/store/cartSlice"; // Import the action to update the Redux state
+import { log } from "console";
 
 export default function CartBar({
   openCartBar,
@@ -18,13 +19,14 @@ export default function CartBar({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch data from the API when the component mounts using Axios
+
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get("https://dummyjson.com/carts/1"); // Example endpoint
+        const response = await axios.get("https://dummyjson.com/carts/1"); 
         const data = response.data;
 
-        // Assuming data.products contains an array of items
+   console.log(data);
+   
         data.products.forEach((item: any) => {
           dispatch(
             addToCart({
@@ -73,7 +75,7 @@ export default function CartBar({
             <ul>
               {cart.map((item) => (
                 <li
-                  key={`${item.id}-${item.name}`} // Composite key: item.id + item.name
+                  key={`${item.id}-${item.name}`} 
                   className="border-b p-2"
                 >
                   <span>{item.name}</span> - ${item.price} x {item.amount}

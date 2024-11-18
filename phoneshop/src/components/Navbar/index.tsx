@@ -9,6 +9,7 @@ import SideBarMenu from "./SideBarMenu";
 
 const Navbar = () => {
 
+   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [openCartBar, setOpenCartBar]= useState(false)
   return (
     <nav className="bg-slate-200 shadow-md h-full">
@@ -16,7 +17,12 @@ const Navbar = () => {
         <Row className=" justify-between">
           <SideBarMenu />
           <Logo />
-          <IconsGroup openCartBar={ openCartBar } setOpenCartBar={ setOpenCartBar} />
+          <IconsGroup
+            openCartBar={openCartBar}
+            openSearchBar={openSearchBar}
+            setOpenCartBar={setOpenCartBar}
+            setOpenSearchBar={setOpenSearchBar}
+          />
         </Row>
       </Container>
     </nav>

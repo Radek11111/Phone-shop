@@ -5,13 +5,18 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import CartBar from "./CartBar";
+import SearchBar from "./SearchBar";
 
 export default function IconsGroup({
+  openSearchBar,
   openCartBar,
   setOpenCartBar,
+  setOpenSearchBar,
 }: {
+  openSearchBar: boolean;
   openCartBar: boolean;
   setOpenCartBar: (value: boolean) => void;
+  setOpenSearchBar: (value: boolean) => void;
 }) {
   const { isSignedIn } = useUser();
 
@@ -20,7 +25,15 @@ export default function IconsGroup({
   return (
     <div className="flex items-center gap-12 relative">
       <div className="inline-flex items-center gap-6">
-        <Button variant="nostyle" size="icon">
+        <SearchBar
+          openSearchBar={openSearchBar}
+          setOpenSearchBar={setOpenSearchBar}
+        />
+        <Button
+          variant="nostyle"
+          size="icon"
+          onClick={() => setOpenSearchBar(!openSearchBar)}
+        >
           <CiSearch size={40} className="hover:text-primary-900" />
         </Button>
         <Button
