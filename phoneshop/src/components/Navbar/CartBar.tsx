@@ -25,7 +25,7 @@ export default function CartBar({
         const response = await axios.get("https://dummyjson.com/carts/1"); 
         const data = response.data;
 
-   console.log(data);
+  
    
         data.products.forEach((item: any) => {
           dispatch(

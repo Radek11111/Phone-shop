@@ -23,7 +23,7 @@ export default function SearchBar({
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const search = e.currentTarget.value;
+    const search = e.currentTarget.value.trim();
     if (search.length > 1) {
       setLoading(true);
       try {
@@ -77,7 +77,7 @@ export default function SearchBar({
             data.map((item: Product, idx: number) => (
               <div
                 onClick={() => {
-                  router.push(`/products/${item.slug}`);
+                  router.push(`/products/${item.id}`);
                   setOpenSearchBar(false);
                 }}
                 key={idx}
