@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Search, X } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -40,7 +33,7 @@ export default function SearchBar({
             params: { q: "phone" },
           }
         );
-        setData(response.data.products); 
+        setData(response.data.products);
         setError(null);
       } catch (error) {
         setError("Błąd podczas wyszukiwania");
@@ -52,7 +45,7 @@ export default function SearchBar({
         setLoading(false);
       }
     } else {
-      setData([]); 
+      setData([]);
     }
   };
 
@@ -82,15 +75,27 @@ export default function SearchBar({
             <p>{error}</p>
           ) : (
             data.map((item: Product, idx: number) => (
-              <div key={idx} className="flex flex-col items-center">
+              <div
+                onClick={() => {
+                  router.push(`/products/${item.slug}`);
+                  setOpenSearchBar(false);
+                }}
+                key={idx}
+                className="flex flex-col items-center mx-auto px-4"
+              >
                 <Image
                   src={item.thumbnail}
-                  height={80}
-                  width={60}
-                  className="object-contain"
+                  height={120}
+                  width={100}
+                  className="object-contain "
                   alt={item.title}
                 />
-                <p>{item.title}</p>
+                <h3 className="text-slate-800 mb-1 mt-4">{item.title}</h3>
+                <p className="pt-0 text-center ">
+                  {item.description.length > 100
+                    ? `${item.description.substring(0, 100)}...`
+                    : item.description}
+                </p>
               </div>
             ))
           )}
