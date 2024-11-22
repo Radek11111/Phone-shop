@@ -81,21 +81,22 @@ export default function SearchBar({
                   setOpenSearchBar(false);
                 }}
                 key={idx}
-                className="flex flex-col items-center mx-auto px-4"
               >
-                <Image
-                  src={item.thumbnail}
-                  height={120}
-                  width={100}
-                  className="object-contain "
-                  alt={item.title}
-                />
-                <h3 className="text-slate-800 mb-1 mt-4">{item.title}</h3>
-                <p className="pt-0 text-center ">
-                  {item.description.length > 100
-                    ? `${item.description.substring(0, 100)}...`
-                    : item.description}
-                </p>
+                <div className="group cursor-pointer flex flex-col items-center mx-auto px-4 ">
+                  <Image
+                    src={item.thumbnail}
+                    height={120}
+                    width={100}
+                    className="transition-transform duration-300 ease-in-out group-hover:scale-110  "
+                    alt={item.title}
+                  />
+                  <h3 className="text-slate-800 mb-1 mt-4">{item.title}</h3>
+                  <p className="pt-0 text-center ">
+                    {item.description.length > 100
+                      ? `${item.description.substring(0, 50)} ...`
+                      : item.description}
+                  </p>
+                </div>
               </div>
             ))
           )}

@@ -30,10 +30,12 @@ export default function RootLayout({
       <html lang="en">
         <body className={recursive.className}>
           <Providers>
-            <Navbar />
+            <div className="flex flex-col min-h-screen">
 
-            {children}
+            <Navbar />
+            <main className="flex-grow">{children}</main>
             <Footer />
+            </div>
           </Providers>
         </body>
       </html>
