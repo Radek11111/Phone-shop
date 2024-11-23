@@ -5,8 +5,8 @@ import axios from "axios";
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
-import { addToCart } from "@/store/cartSlice"; // Import the action to update the Redux state
-import { log } from "console";
+import { addToCart } from "@/store/cartSlice"; 
+
 
 export default function CartBar({
   openCartBar,
@@ -18,32 +18,8 @@ export default function CartBar({
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-
-    const fetchCartItems = async () => {
-      try {
-        const response = await axios.get("https://dummyjson.com/carts/1"); 
-        const data = response.data;
 
   
-   
-        data.products.forEach((item: any) => {
-          dispatch(
-            addToCart({
-              id: item.id,
-              name: item.title,
-              price: item.price,
-              amount: item.quantity,
-            })
-          );
-        });
-      } catch (error) {
-        console.error("Failed to fetch cart items", error);
-      }
-    };
-
-    fetchCartItems();
-  }, [dispatch]);
 
   return (
     <AnimatePresence>
@@ -75,7 +51,7 @@ export default function CartBar({
             <ul>
               {cart.map((item) => (
                 <li
-                  key={`${item.id}-${item.name}`} 
+                  key={item.id} 
                   className="border-b p-2"
                 >
                   <span>{item.name}</span> - ${item.price} x {item.amount}

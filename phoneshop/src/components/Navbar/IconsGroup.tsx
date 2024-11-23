@@ -23,8 +23,8 @@ export default function IconsGroup({
   const router = useRouter();
 
   return (
-    <div className="flex items-center gap-12 relative">
-      <div className="inline-flex items-center gap-6">
+    <div className="flex items-center relative">
+      <div className="inline-flex items-center gap-1">
         <SearchBar
           openSearchBar={openSearchBar}
           setOpenSearchBar={setOpenSearchBar}
@@ -34,17 +34,17 @@ export default function IconsGroup({
           size="icon"
           onClick={() => setOpenSearchBar(!openSearchBar)}
         >
-          <CiSearch size={40} className="hover:text-primary-900" />
+          <CiSearch size={30} className="hover:text-primary-900" />
         </Button>
         <Button
           id="openCart"
           onClick={() => setOpenCartBar(!openCartBar)}
-          className="hidden lg:block relative"
+          className=""
           variant="nostyle"
           size="icon"
         >
           <CiShoppingCart
-            size={40}
+            size={30}
             className="font-bold hover:text-primary-900"
           />
           <span className="absolute flex items-center justify-center  text-white text-base -top-0 justify-items-stretch -right-2 h-5 w-5 rounded-full bg-red-700">
@@ -53,21 +53,21 @@ export default function IconsGroup({
         </Button>
         {isSignedIn ? (
           <Button
-            className="hidden lg:block relative"
+            className=""
             variant="nostyle"
             size="icon"
             onClick={() => router.push("/account/dashboard")}
           >
-            <CiUser size={40} />
+            <CiUser size={30} />
           </Button>
         ) : (
           <Button
-            className="hidden lg:block relative"
+            className=""
             variant="nostyle"
             size="icon"
             onClick={() => router.push("/sign-in")}
           >
-            <CiLogin size={40} />
+            <CiLogin size={30} />
           </Button>
         )}
         <CartBar openCartBar={openCartBar} setOpenCartBar={setOpenCartBar} />
