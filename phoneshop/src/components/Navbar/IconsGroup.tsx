@@ -24,7 +24,7 @@ export default function IconsGroup({
 
   return (
     <div className="flex items-center relative">
-      <div className="inline-flex items-center gap-1">
+      <div className="inline-flex items-center gap-1 lg:gap-3">
         <SearchBar
           openSearchBar={openSearchBar}
           setOpenSearchBar={setOpenSearchBar}
