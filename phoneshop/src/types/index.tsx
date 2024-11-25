@@ -46,10 +46,11 @@ export type Product = {
 };
 
 export type CartItem = {
-  id: string;
+  id: string | number;
   name: string;
   price: number;
   amount: number;
+  thumbnail: string;
 };
 
 export type Cart = {
