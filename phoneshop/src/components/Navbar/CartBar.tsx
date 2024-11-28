@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
-import axios from "axios";
+
+
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
-import { addToCart } from "@/store/cartSlice";
-import { ShoppingBasket } from "lucide-react";
+
+import { ShoppingBasket, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Image from "next/image";
+import { removeProductById } from "@/store/cartSlice";
 
 export default function CartBar({
   openCartBar,
@@ -18,7 +20,11 @@ export default function CartBar({
   setOpenCartBar: (v: boolean) => void;
 }) {
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
-  const dispatch = useDispatch();
+  const dispach = useDispatch();
+
+  const handleRemoveItem = (item: { id: string | number }) => {
+    dispach(removeProductById(String(item.id)));
+  };
 
   return (
     <AnimatePresence>
@@ -49,9 +55,33 @@ export default function CartBar({
           {cart.length > 0 ? (
             <ul>
               {cart.map((item) => (
-                <li key={item.id} className="border-b p-2">
-                  <span>{item.name}</span> - ${item.price} x {item.amount}
-                </li>
+                <div
+                  className="flex justify-between gap-4 snap-center cursor-grab"
+                  key={item.id}
+                >
+                  <Image
+                    src={item.thumbnail}
+                    width="200"
+                    height="200"
+                    alt="prod"
+                    className="h-20 w-20 object-cover"
+                  />
+                  <div className="flex flex-col gap-1 ">
+                    <span className="capitalize">
+                      {item.name.substring(0, 30)}
+                    </span>
+                    <div className="inline-flex gap-4 font-bold">
+                      <span>{item.price}$</span>
+                    </div>
+                  </div>
+                  <div
+                    role="button"
+                    onClick={() => handleRemoveItem(item)}
+                    className="flex items-start"
+                  >
+                    <Trash className="hover:text-primary-500" size={20} />
+                  </div>
+                </div>
               ))}
             </ul>
           ) : (
@@ -67,7 +97,7 @@ export default function CartBar({
           <div className="flex flex-col gap-6">
             <div className="flex justify-between font-bold">
               <h6>Subtotal:</h6>
-              <strong className="">value</strong>
+              <strong className="">{}</strong>
             </div>
           </div>
           <div className="flex flex-col gap-4">
