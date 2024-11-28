@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CiLogin, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,12 @@ export default function IconsGroup({
   const { isSignedIn } = useUser();
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
 
+  const [itemsCount, setItemsCount] = useState(0);
   const router = useRouter();
+
+  useEffect(() => {
+    setItemsCount(cart.reduce((total, item) => total + item.amount, 0));
+  }, [cart]);
 
   return (
     <div className="flex items-center relative">
@@ -51,7 +56,7 @@ export default function IconsGroup({
             className="font-bold hover:text-primary-900"
           />
           <span className="absolute flex items-center justify-center  text-white text-sm -top-0 justify-items-stretch -right-1 h-4 w-4 rounded-full bg-red-700">
-          {cart.length}
+            {itemsCount}
           </span>
         </Button>
         {isSignedIn ? (
