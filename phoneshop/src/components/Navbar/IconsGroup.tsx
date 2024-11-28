@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import CartBar from "./CartBar";
 import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/store";
 
 export default function IconsGroup({
   openSearchBar,
@@ -19,6 +21,7 @@ export default function IconsGroup({
   setOpenSearchBar: (value: boolean) => void;
 }) {
   const { isSignedIn } = useUser();
+  const cart = useSelector((state: IRootState) => state.cart.cartItems);
 
   const router = useRouter();
 
@@ -47,8 +50,8 @@ export default function IconsGroup({
             size={30}
             className="font-bold hover:text-primary-900"
           />
-          <span className="absolute flex items-center justify-center  text-white text-base -top-0 justify-items-stretch -right-2 h-5 w-5 rounded-full bg-red-700">
-            0
+          <span className="absolute flex items-center justify-center  text-white text-sm -top-0 justify-items-stretch -right-1 h-4 w-4 rounded-full bg-red-700">
+          {cart.length}
           </span>
         </Button>
         {isSignedIn ? (

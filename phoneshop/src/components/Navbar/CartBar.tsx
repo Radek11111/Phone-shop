@@ -1,6 +1,6 @@
 "use client";
 
-
+import React, { useEffect } from "react";
 
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,8 +22,8 @@ export default function CartBar({
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispach = useDispatch();
 
-  const handleRemoveItem = (item: { id: string | number }) => {
-    dispach(removeProductById(String(item.id)));
+  const handleRemoveItem = (item: { id: string | number}) => {
+    dispach(removeProductById(item.id));
   };
 
   return (
@@ -97,7 +97,7 @@ export default function CartBar({
           <div className="flex flex-col gap-6">
             <div className="flex justify-between font-bold">
               <h6>Subtotal:</h6>
-              <strong className="">{}</strong>
+              <strong className="">value</strong>
             </div>
           </div>
           <div className="flex flex-col gap-4">
