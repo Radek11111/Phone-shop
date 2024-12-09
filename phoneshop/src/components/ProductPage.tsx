@@ -1,17 +1,31 @@
 "use client";
 
-import React from "react";
-import type { Product } from "@/types";
+import React, { useEffect, useState } from "react";
+import type { Product, CartItem } from "@/types";
 import Container from "@/components/Container";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, updateToCart } from "@/store/cartSlice";
+import toast from "react-hot-toast";
+
+import { IRootState } from "@/store";
 
 export default function ProductPage({ product }: { product: Product | null }) {
+  const cart = useSelector((state: IRootState) => state.cart);
+  const [qty, setQty] = useState<number>(1);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cartItem = cart.cartItems.find(
+      (item: CartItem) => item.id === product?.id
+    );
+    if (cartItem) {
+      setQty(cartItem.qty);
+    }
+  }, [cart, product]);
 
   if (!product) {
     return (
@@ -22,15 +36,41 @@ export default function ProductPage({ product }: { product: Product | null }) {
   }
 
   const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        name: product.title,
-        price: product.price,
-        thumbnail: product.thumbnail,
-        amount: 1,
-      })
-    );
+    const existingItem = cart.cartItems.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      const updatedCart = cart.cartItems.map((item) =>
+        item.id === product.id ? { ...item, qty: item.qty + qty } : item
+      );
+      dispatch(updateToCart(updatedCart));
+      toast.success("Cart updated");
+    } else {
+      dispatch(
+        addToCart({
+          id: product.id,
+          name: product.title,
+          price: product.price,
+          thumbnail: product.thumbnail,
+          amount: product.price * qty,
+          qty,
+        })
+      );
+      toast.success("Product added to cart");
+    }
+  };
+
+  const updateQty = (action: "inc" | "dec") => {
+    if (action === "dec" && qty === 1) {
+      toast.error("You have reached the minimum quantity");
+      return;
+    }
+
+    if (action === "inc" && qty === 9) {
+      toast.error("You have reached the maximum quantity");
+      return;
+    }
+
+    setQty((prevQty) => (action === "dec" ? prevQty - 1 : prevQty + 1));
   };
 
   return (
@@ -52,23 +92,32 @@ export default function ProductPage({ product }: { product: Product | null }) {
             </p>
           </div>
         </div>
-
-        <div className="flex justify-center mt-6">
+    <div className="flex flex-col items-center justify-center ">
+        <div className="flex justify-between items-center mt-6 gap-4 w-full max-w-lg">
           <Button
             onClick={handleAddToCart}
-            role="combobox"
-            className={cn(
-              "w-full px-6 py-2 font-bold text-white bg-green-500 rounded transition-transform",
-              "hover:bg-green-600 hover:scale-105 hover:shadow-lg",
-              "active:bg-green-700 focus:ring-2 focus:ring-green-300"
-            )}
-            style={{
-              maxWidth: "calc(100% - 40px)",
-            }}
+            className="flex-1 px-6 py-3 font-bold text-white bg-green-500 rounded-lg shadow-md transition-transform hover:bg-green-600 hover:shadow-lg"
           >
             Add to cart
           </Button>
-        </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => updateQty("dec")}
+              className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center"
+            >
+              -
+            </Button>
+            <span className="text-lg font-bold">{qty}</span>
+            <Button
+              onClick={() => updateQty("inc")}
+              className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center"
+            >
+              +
+            </Button>
+          </div>
+          </div>
+          </div>
       </Container>
     </section>
   );

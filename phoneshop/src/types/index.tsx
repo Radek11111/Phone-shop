@@ -51,7 +51,7 @@ export type CartItem = {
   price: number;
   amount: number;
   thumbnail: string;
-  qty: number;
+  qty: number
 };
 
 export type Cart = {

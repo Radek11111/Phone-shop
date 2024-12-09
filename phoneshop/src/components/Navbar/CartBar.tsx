@@ -31,7 +31,7 @@ export default function CartBar({
 
   const subtotal = cart.reduce(
     (accumulator: number, currentValue: CartItem) =>
-      accumulator + currentValue.price,
+      accumulator + currentValue.price * currentValue.qty,
     0
   );
 
@@ -83,6 +83,7 @@ export default function CartBar({
 
                     <div className="inline-flex gap-4 font-bold">
                       <span>{item.price}$</span>
+                      <span className=" text-gray-500 "> X { item.qty }</span>
                     </div>
                   </div>
                   <div

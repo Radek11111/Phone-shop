@@ -27,7 +27,7 @@ export default function IconsGroup({
   const router = useRouter();
 
   useEffect(() => {
-    setItemsCount(cart.reduce((total, item) => total + item.amount, 0));
+    setItemsCount(cart.reduce((total, item) => total + item.qty, 0));
   }, [cart]);
 
   return (
