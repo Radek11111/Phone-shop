@@ -23,20 +23,26 @@ export default function SearchBar({
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    
     const search = e.currentTarget.value.trim();
-    if (search.length > 1) {
+    if (search.length >= 3) {
       setLoading(true);
+      setError(null);
       try {
         const response = await axios.get(
-          `https://dummyjson.com/products/search`,
-          {
-            params: { q: "phone" },
-          }
+          `https://dummyjson.com/products/search?q=${encodeURIComponent(
+            search
+          )}`
         );
-        setData(response.data.products);
-        setError(null);
+        if (response.data.products.length > 0) {
+          setData(response.data.products);
+          setError(null);
+        } else {
+          setData([]);
+          setError("No produts match your search.");
+        }
       } catch (error) {
-        setError("Błąd podczas wyszukiwania");
+        setError("Error while searching");
         toast({
           title: "Error",
           description: "Product not found",
@@ -46,6 +52,7 @@ export default function SearchBar({
       }
     } else {
       setData([]);
+      setError(null);
     }
   };
 

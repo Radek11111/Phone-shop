@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
 import { Recursive } from "next/font/google";
 import "./globals.css";
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "@/providers";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
@@ -29,14 +20,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={recursive.className}>
-          <Providers>
-            <div className="flex flex-col min-h-screen">
-
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            </div>
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
