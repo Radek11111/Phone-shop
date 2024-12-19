@@ -7,6 +7,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import "./style.css";
 
 export default function HomeSlide() {
   const [loading, setLoading] = useState(false);
