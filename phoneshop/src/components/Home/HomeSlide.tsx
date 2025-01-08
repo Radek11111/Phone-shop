@@ -30,7 +30,7 @@ export default function HomeSlide() {
           <Skeleton className="h-[700px] w-full" />
         ) : (
           <Swiper
-            autoplay={false} 
+            autoplay={false}
             spaceBetween={50}
             slidesPerView={1}
             navigation={true}
@@ -51,17 +51,15 @@ export default function HomeSlide() {
                 transition: "background-image 1s ease-in-out",
               }}
             >
-             
               <div className="absolute inset-0 bg-black bg-opacity-30 z-10"></div>
 
-             
               <div className="relative z-20 flex items-center justify-center left-40">
                 <Button
                   variant="default"
                   size="lg"
                   className="hover:shadow-button px-12 py-8 bg-white bg-opacity-40 text-black hover:bg-opacity-90 hover:text-white"
                 >
-                  <Link href="" className="text-xl">
+                  <Link href="/store" className="text-xl">
                     BUY NOW
                   </Link>
                 </Button>
