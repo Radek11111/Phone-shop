@@ -6,7 +6,6 @@ import Container from "@/components/Container";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, updateToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";

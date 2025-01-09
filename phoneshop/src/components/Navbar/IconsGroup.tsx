@@ -56,7 +56,7 @@ export default function IconsGroup({
         </div>
         <div className="">
           <Link
-            href="/favorites"
+            href="/favourite"
             className="flex items-center gap-2 transition-transform hover:scale-110"
             onMouseEnter={() => setIsFavoriteHovered(true)}
             onMouseLeave={() => setIsFavoriteHovered(false)}
