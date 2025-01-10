@@ -2,50 +2,68 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../../actions/product";
 import type { Product } from "@/types";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function StorePage({ product }: { product: Product | null }) {
+export default function StorePage() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const result = await getProducts();
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setProducts(result.products || []);
+      setLoading(true); 
+      try {
+        const result = await getProducts();
+        if (result.error) {
+          setError(result.error);
+        } else {
+          setProducts(result.products || []);
+        }
+      } catch (err: any) {
+        setError("Failed to fetch products.");
+      } finally {
+        setLoading(false); 
       }
     };
 
     fetchProducts();
-  }, [product]);
+  }, []);
+
+  if (loading) {
+    return <p className="text-center mt-8">Loading...</p>;
+  }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <p className="text-center text-red-600 mt-8">{error}</p>;
   }
+
   return (
-    <div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-        {products.map((product) => (
-          <div
-            key={product.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "16px",
-              borderRadius: "8px",
-              width: "200px",
-            }}
-          >
-            <h2>{product.title}</h2>
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-            />
-            <p>Price: ${product.price}</p>
-          </div>
-        ))}
-      </div>
+    <div className="flex flex-wrap gap-6 justify-center mt-8">
+      {products.map((item: Product) => (
+        <div
+          key={item.id}
+          className="group cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
+          onClick={() => {
+            router.push(`/products/${item.id}`);
+          }}
+        >
+          <Image
+            src={item.thumbnail}
+            height={120}
+            width={100}
+            className="transition-transform duration-300 ease-in-out group-hover:scale-110"
+            alt={item.title}
+          />
+          <h3 className="text-slate-800 mb-1 mt-4 text-center">{item.title}</h3>
+          <p className="pt-0 text-center text-gray-600">
+            {item.description.length > 50
+              ? `${item.description.substring(0, 50)} ...`
+              : item.description}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
