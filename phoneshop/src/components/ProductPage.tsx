@@ -9,13 +9,15 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, updateToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 import { IRootState } from "@/store";
+import { MoveLeft } from "lucide-react";
 
 export default function ProductPage({ product }: { product: Product | null }) {
   const cart = useSelector((state: IRootState) => state.cart);
   const [qty, setQty] = useState<number>(1);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const cartItem = cart.cartItems.find(
@@ -75,6 +77,12 @@ export default function ProductPage({ product }: { product: Product | null }) {
   return (
     <section className="my-10 flex justify-center items-center">
       <Container>
+        <div className="absolute top-20 left-0 p-8 md:hidden">
+          <Button variant="nostyle" className="flex items-center space-x-2" onClick={() => router.back()}>
+            <MoveLeft size={20} />
+            Go Back
+          </Button>
+        </div>
         <h1 className="text-3xl font-bold mb-8 text-center">{product.title}</h1>
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           <Zoom>
@@ -91,32 +99,32 @@ export default function ProductPage({ product }: { product: Product | null }) {
             </p>
           </div>
         </div>
-    <div className="flex flex-col items-center justify-center ">
-        <div className="flex justify-between items-center mt-6 gap-4 w-full max-w-lg">
-          <Button
-            onClick={handleAddToCart}
-            className="flex-1 px-6 py-3 font-bold text-white bg-green-500 rounded-lg shadow-md transition-transform hover:bg-green-600 hover:shadow-lg"
-          >
-            Add to cart
-          </Button>
+        <div className="flex flex-col items-center justify-center ">
+          <div className="flex justify-between items-center mt-6 gap-4 w-full max-w-lg">
+            <Button
+              onClick={handleAddToCart}
+              className="flex-1 px-6 py-3 font-bold text-white bg-green-500 rounded-lg shadow-md transition-transform hover:bg-green-600 hover:shadow-lg"
+            >
+              Add to cart
+            </Button>
 
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => updateQty("dec")}
-              className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center"
-            >
-              -
-            </Button>
-            <span className="text-lg font-bold">{qty}</span>
-            <Button
-              onClick={() => updateQty("inc")}
-              className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center"
-            >
-              +
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={() => updateQty("dec")}
+                className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center"
+              >
+                -
+              </Button>
+              <span className="text-lg font-bold">{qty}</span>
+              <Button
+                onClick={() => updateQty("inc")}
+                className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center"
+              >
+                +
+              </Button>
+            </div>
           </div>
-          </div>
-          </div>
+        </div>
       </Container>
     </section>
   );
