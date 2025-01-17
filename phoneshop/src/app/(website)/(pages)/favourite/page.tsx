@@ -1,4 +1,6 @@
+"use client"
 import Container from '@/components/Container'
+import FavouritePage from '@/components/favouritePage'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import Link from 'next/link'
 import React from 'react'
@@ -21,7 +23,8 @@ export default function page() {
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
-        </Breadcrumb>
+          </Breadcrumb>
+          <FavouritePage/>
       </Container>
     </section>
     

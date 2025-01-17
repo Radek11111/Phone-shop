@@ -5,10 +5,15 @@ import type { Product } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Pagination } from "@mui/material";
+import { FaHeart } from "react-icons/fa";
+import { RiHeart3Line } from "react-icons/ri";
 
 export default function StorePage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
+  const [likedProducts, setLikedProducts] = useState<Set<number>>(
+    new Set(JSON.parse(localStorage.getItem("likedProducts") || "[]"))
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -35,6 +40,25 @@ export default function StorePage() {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem(
+      "likedProducts",
+      JSON.stringify(Array.from(likedProducts))
+    );
+  }, [likedProducts]);
+
+  const toggleLike = (id: number) => {
+    setLikedProducts((prev) => {
+      const updated = new Set(prev);
+      if (updated.has(id)) {
+        updated.delete(id);
+      } else {
+        updated.add(id);
+      }
+      return updated;
+    });
+  };
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -52,23 +76,33 @@ export default function StorePage() {
   if (error) {
     return <p className="text-center text-red-600 mt-8">{error}</p>;
   }
+
   return (
     <>
       <div className="flex flex-wrap gap-6 justify-center mt-8">
         {paginatedProducts.map((item: Product) => (
           <div
             key={item.id}
-            className="group cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
-            onClick={() => {
-              router.push(`/products/${item.id}`);
-            }}
+            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
           >
+            {/* Ikona serca w prawym górnym rogu */}
+            <div
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => toggleLike(item.id)}
+            >
+              {likedProducts.has(item.id) ? (
+                <FaHeart size={30} className="text-red-600 transition-all" />
+              ) : (
+                <RiHeart3Line size={30} className="transition-all" />
+              )}
+            </div>
             <Image
               src={item.thumbnail}
               height={120}
               width={100}
               className="transition-transform duration-300 ease-in-out group-hover:scale-110"
               alt={item.title}
+              onClick={() => router.push(`/products/${item.id}`)}
             />
             <h3 className="text-slate-800 mb-1 mt-4 text-center">
               {item.title}
@@ -86,7 +120,6 @@ export default function StorePage() {
         <Pagination
           count={pageCount}
           page={page}
-         
           variant="outlined"
           shape="rounded"
           onChange={handleChange}
@@ -98,6 +131,12 @@ export default function StorePage() {
           results
         </div>
       </div>
+      <button
+        className="mt-8 px-4 py-2 bg-blue-600 text-white rounded-md"
+        onClick={() => router.push("/favourite")}
+      >
+        Go to Favourites
+      </button>
     </>
   );
 }

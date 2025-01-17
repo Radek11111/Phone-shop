@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import { SlHeart } from "react-icons/sl";
-import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
+import { RiHeart3Line } from "react-icons/ri";
 import {
-  CiHeart,
   CiLogin,
   CiSearch,
   CiShop,

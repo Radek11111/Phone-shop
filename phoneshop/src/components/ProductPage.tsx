@@ -11,7 +11,7 @@ import { addToCart, updateToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IRootState } from "@/store";
-import { MoveLeft } from "lucide-react";
+
 
 export default function ProductPage({ product }: { product: Product | null }) {
   const cart = useSelector((state: IRootState) => state.cart);
@@ -77,12 +77,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
   return (
     <section className="my-10 flex justify-center items-center">
       <Container>
-        <div className="absolute top-20 left-0 p-8 md:hidden">
-          <Button variant="nostyle" className="flex items-center space-x-2" onClick={() => router.back()}>
-            <MoveLeft size={20} />
-            Go Back
-          </Button>
-        </div>
+       
         <h1 className="text-3xl font-bold mb-8 text-center">{product.title}</h1>
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           <Zoom>
