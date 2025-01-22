@@ -7,18 +7,19 @@ import { useRouter } from "next/navigation";
 import { Pagination } from "@mui/material";
 import { FaHeart } from "react-icons/fa";
 import { RiHeart3Line } from "react-icons/ri";
+import { useSelector, useDispatch } from "react-redux";
+import { IRootState, AppDispatch } from "../store";
+import { toggleFavourite } from "../store/favouritesSlice";
 
 export default function StorePage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
-  const [likedProducts, setLikedProducts] = useState<Set<number>>(
-    new Set(JSON.parse(localStorage.getItem("likedProducts") || "[]"))
-  );
+  const likedProducts = useSelector((state: IRootState) => state.favourites.likedProducts);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [page, setPage] = useState<number>(1);
   const perPage = 10;
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,25 +40,6 @@ export default function StorePage() {
 
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "likedProducts",
-      JSON.stringify(Array.from(likedProducts))
-    );
-  }, [likedProducts]);
-
-  const toggleLike = (id: number) => {
-    setLikedProducts((prev) => {
-      const updated = new Set(prev);
-      if (updated.has(id)) {
-        updated.delete(id);
-      } else {
-        updated.add(id);
-      }
-      return updated;
-    });
-  };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -85,12 +67,11 @@ export default function StorePage() {
             key={item.id}
             className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
           >
-            {/* Ikona serca w prawym górnym rogu */}
             <div
               className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => toggleLike(item.id)}
+              onClick={() => dispatch(toggleFavourite(item.id))}
             >
-              {likedProducts.has(item.id) ? (
+              {likedProducts.includes(item.id) ? (
                 <FaHeart size={30} className="text-red-600 transition-all" />
               ) : (
                 <RiHeart3Line size={30} className="transition-all" />
@@ -131,12 +112,6 @@ export default function StorePage() {
           results
         </div>
       </div>
-      <button
-        className="mt-8 px-4 py-2 bg-blue-600 text-white rounded-md"
-        onClick={() => router.push("/favourite")}
-      >
-        Go to Favourites
-      </button>
     </>
   );
 }

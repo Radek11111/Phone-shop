@@ -4,12 +4,17 @@ import { getProducts } from "../../actions/product";
 import { Product } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { IRootState } from "../store";
+import { toggleFavourite } from "../store/favouritesSlice";
+import { FaTrashAlt } from "react-icons/fa";
 
 export default function FavouritePage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
-  const [likedProducts, setLikedProducts] = useState<Set<number>>(
-    new Set(JSON.parse(localStorage.getItem("likedProducts") || "[]"))
+  const dispatch = useDispatch();
+  const { likedProducts } = useSelector(
+    (state: IRootState) => state.favourites
   );
 
   useEffect(() => {
@@ -24,16 +29,16 @@ export default function FavouritePage() {
   }, []);
 
   const favouriteProducts = products.filter((item) =>
-    likedProducts.has(item.id)
+    likedProducts.includes(item.id)
   );
 
   return (
-    <div className="flex flex-wrap gap-6 justify-center mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center mt-8">
       {favouriteProducts.length > 0 ? (
         favouriteProducts.map((item) => (
           <div
             key={item.id}
-            className="group cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
+            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
             onClick={() => router.push(`/products/${item.id}`)}
           >
             <Image

@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import cartReducer from "./cartSlice";
+import favouritesReducer from "./favouritesSlice";
 
-const rootReducer = combineReducers({ cart: cartReducer });
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  favourites: favouritesReducer,
+});
 
 const store = configureStore({
   reducer: rootReducer,
@@ -10,3 +14,4 @@ const store = configureStore({
 
 export default store;
 export type IRootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
