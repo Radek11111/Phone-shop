@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { IRootState } from "../store";
 import { toggleFavourite } from "../store/favouritesSlice";
 import { FaTrashAlt } from "react-icons/fa";
+import { RiHeart3Line } from "react-icons/ri";
 
 export default function FavouritePage() {
   const router = useRouter();
@@ -41,6 +42,18 @@ export default function FavouritePage() {
             className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
             onClick={() => router.push(`/products/${item.id}`)}
           >
+            <div
+              className="absolute top-2 right-2 cursor-pointer z-10"
+              onClick={(e) => {
+                e.stopPropagation(); 
+                dispatch(toggleFavourite(item.id));
+              }}
+            >
+              <FaTrashAlt
+                size={30}
+                className="text-gray-600 hover:text-red-600 transition-all"
+              />
+            </div>
             <Image
               src={item.thumbnail}
               height={120}
