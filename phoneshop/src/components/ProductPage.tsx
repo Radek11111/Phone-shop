@@ -54,6 +54,8 @@ export default function ProductPage({ product }: { product: Product | null }) {
           thumbnail: product.thumbnail,
           amount: product.price * qty,
           qty,
+          title: product.title,
+          
         })
       );
       toast.success("Product added to cart");

@@ -1,7 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
@@ -11,8 +8,6 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { removeProductById } from "@/store/cartSlice";
-import { CartItem } from "@/types";
-import CurrencyFormat from "../CurrencyFormat";
 
 export default function CartBar({
   openCartBar,
@@ -22,19 +17,20 @@ export default function CartBar({
   setOpenCartBar: (v: boolean) => void;
 }) {
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
-  const dispach = useDispatch();
-  
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    console.log("Cart items:", cart);
+  }, [cart]);
 
   const handleRemoveItem = (item: { id: string | number }) => {
-    dispach(removeProductById(item.id));
+    dispatch(removeProductById(item.id));
   };
 
-  const subtotal = cart.reduce(
-    (accumulator: number, currentValue: CartItem) =>
-      accumulator + currentValue.price * currentValue.qty,
+  // Calculate total price of all items in the cart
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.qty,
     0
-  );
-
+  ).toFixed(2); // Format to 2 decimal places
 
   return (
     <AnimatePresence>
@@ -73,7 +69,7 @@ export default function CartBar({
                     src={item.thumbnail}
                     width="200"
                     height="200"
-                    alt="prod"
+                    alt="product"
                     className="h-20 w-20 object-cover"
                   />
                   <div className="flex flex-col gap-1 ">
@@ -83,7 +79,7 @@ export default function CartBar({
 
                     <div className="inline-flex gap-4 font-bold">
                       <span>{item.price}$</span>
-                      <span className=" text-gray-500 "> X { item.qty }</span>
+                      <span className=" text-gray-500 "> X {item.qty}</span>
                     </div>
                   </div>
                   <div
@@ -104,17 +100,15 @@ export default function CartBar({
                 <h5 className="">Your cart is empty</h5>
 
                 <Button className="bg-green-400 border capitalize border-slate-200">
-                  <Link href="/products">shop now</Link>
+                  <Link href="/store">shop now</Link>
                 </Button>
               </div>
             )}
           </div>
           <div className="flex flex-col gap-6">
             <div className="flex justify-between font-bold">
-              <h6>Subtotal:</h6>
-              <strong className="">
-                <CurrencyFormat value={subtotal} className="text-right" />
-              </strong>
+              <h6>Total price:</h6>
+              <strong className="">{totalPrice}$</strong>
             </div>
           </div>
           <div className="flex flex-col gap-4">

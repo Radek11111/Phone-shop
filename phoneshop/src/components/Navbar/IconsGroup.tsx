@@ -30,14 +30,18 @@ export default function IconsGroup({
   setOpenSearchBar: (value: boolean) => void;
 }) {
   const { isSignedIn } = useUser();
-  const cart = useSelector((state: IRootState) => state.cart.cartItems);
+  const cart = useSelector((state: IRootState) => state.cart.cartItems || []);
 
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [itemsCount, setItemsCount] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
-    setItemsCount(cart.reduce((total, item) => total + item.qty, 0));
+    if (Array.isArray(cart)) {
+      setItemsCount(cart.reduce((total, item) => total + item.qty, 0));
+    } else {
+      setItemsCount(0); 
+    }
   }, [cart]);
 
   return (

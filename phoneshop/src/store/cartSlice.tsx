@@ -9,16 +9,17 @@ const saveCartToLocalStorage = (cart: CartItem[]) => {
 };
 
 
-const loadCartFromLocalStorage = (): CartItem[] => {
-  if (typeof window !== "undefined") {
-    const storedCart = localStorage.getItem("cartItems");
-    if (storedCart) {
-      return JSON.parse(storedCart);
-    }
-  }
-  return [];
-};
+function loadCartFromLocalStorage() {
+  try {
+    const cartData = localStorage.getItem("cart");
+    const parsedCart = cartData ? JSON.parse(cartData) : {};
 
+    return Array.isArray(parsedCart.cartItems) ? parsedCart.cartItems : [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+    return [];
+  }
+}
 
 const initialState: CartState = {
   cartItems: loadCartFromLocalStorage(),
@@ -31,29 +32,35 @@ export interface CartState {
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
-
   reducers: {
     addToCart(state, action: PayloadAction<CartItem>) {
-      state.cartItems.push(action.payload);
-      saveCartToLocalStorage(state.cartItems); 
+      const newItem = {
+        ...action.payload,
+        title: action.payload.title,
+      };
+      state.cartItems.push(newItem);
+      saveCartToLocalStorage(state.cartItems);
     },
     updateToCart(state, action: PayloadAction<CartItem[]>) {
-      state.cartItems = action.payload;
-      saveCartToLocalStorage(state.cartItems); 
+      state.cartItems = action.payload.map((item) => ({
+        ...item,
+        title: item.title,
+      }));
+      saveCartToLocalStorage(state.cartItems);
     },
-    emptyToCart(state) {
-      state.cartItems = [];
-      saveCartToLocalStorage(state.cartItems); 
-    },
-    removeProductById: (state, action: PayloadAction<string | number>) => {
+    removeProductById(state, action: PayloadAction<string | number>) {
       state.cartItems = state.cartItems.filter(
         (product) => product.id !== action.payload
       );
-      saveCartToLocalStorage(state.cartItems); 
+      saveCartToLocalStorage(state.cartItems);
+    },
+    emptyToCart(state) {
+      state.cartItems = [];
+      saveCartToLocalStorage(state.cartItems);
     },
     resetState: (state) => {
       state.cartItems = [];
-      saveCartToLocalStorage(state.cartItems); 
+      saveCartToLocalStorage(state.cartItems);
     },
   },
 });
