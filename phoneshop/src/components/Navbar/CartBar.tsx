@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
@@ -18,20 +18,23 @@ export default function CartBar({
 }) {
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
-  React.useEffect(() => {
-    console.log("Cart items:", cart);
-  }, [cart]);
 
   const handleRemoveItem = (item: { id: string | number }) => {
     dispatch(removeProductById(item.id));
   };
 
-  // Calculate total price of all items in the cart
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.qty,
-    0
-  ).toFixed(2); // Format to 2 decimal places
+  const totalPrice = cart
+    .reduce((total, item) => total + item.price * item.qty, 0)
+    .toFixed(2);
 
+    React.useEffect(() => {
+      const storedCart = localStorage.getItem("cartItems");
+      console.log("Koszyk w localStorage:", storedCart ? JSON.parse(storedCart) : "Brak danych");
+    }, []);
+  
+    React.useEffect(() => {
+      console.log("Cart from Redux store:", cart);
+    }, [cart]);
   return (
     <AnimatePresence>
       {openCartBar && (

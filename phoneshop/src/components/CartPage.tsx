@@ -7,11 +7,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
   const [hydrated, setHydrated] = useState(false);
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
+  const router = useRouter()
 
   useEffect(() => {
     setHydrated(true);
@@ -37,6 +39,10 @@ export default function Cart() {
       accumulator + currentValue.price * currentValue.qty,
     0
   );
+
+  const handleCheckout = () => {
+    router.push("/checkout"); 
+  };
 
   return (
     <div className="p-4">
@@ -87,6 +93,12 @@ export default function Cart() {
           ))}
           <div className="p-4 bg-gray-100 rounded-lg shadow-md text-right">
             <p className="text-xl font-bold">Subtotal: ${subtotal.toFixed(2)}</p>
+            <Button
+              onClick={handleCheckout}
+              className="mt-4 bg-green-600 hover:bg-green-700 text-white"
+            >
+              Proceed to Checkout
+            </Button>
           </div>
         </div>
       ) : (

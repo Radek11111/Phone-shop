@@ -1,6 +1,5 @@
-import { CartItem } from "@/types";
+import { CartItem, CartState } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 
 const saveCartToLocalStorage = (cart: CartItem[]) => {
   if (typeof window !== "undefined") {
@@ -8,13 +7,12 @@ const saveCartToLocalStorage = (cart: CartItem[]) => {
   }
 };
 
-
 function loadCartFromLocalStorage() {
   try {
-    const cartData = localStorage.getItem("cart");
-    const parsedCart = cartData ? JSON.parse(cartData) : {};
+    if (typeof window === "undefined") return []; 
 
-    return Array.isArray(parsedCart.cartItems) ? parsedCart.cartItems : [];
+    const cartData = localStorage.getItem("cartItems"); 
+    return cartData ? JSON.parse(cartData) : [];
   } catch (error) {
     console.error("Error loading cart from localStorage:", error);
     return [];
@@ -23,11 +21,8 @@ function loadCartFromLocalStorage() {
 
 const initialState: CartState = {
   cartItems: loadCartFromLocalStorage(),
+  items: [],
 };
-
-export interface CartState {
-  cartItems: CartItem[];
-}
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -62,9 +57,20 @@ export const cartSlice = createSlice({
       state.cartItems = [];
       saveCartToLocalStorage(state.cartItems);
     },
+    clearCart: (state) => {
+      state.items = [];
+      saveCartToLocalStorage(state.cartItems)
+    },
   },
 });
 
-export const { addToCart, updateToCart, emptyToCart, removeProductById, resetState } = cartSlice.actions;
+export const {
+  addToCart,
+  updateToCart,
+  emptyToCart,
+  removeProductById,
+  resetState,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
