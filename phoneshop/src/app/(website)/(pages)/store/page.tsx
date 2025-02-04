@@ -1,5 +1,5 @@
 import Container from "@/components/Container";
-import StorePage from "@/components/StorePage";
+import StorePage from "./StorePage";
 import {
   Breadcrumb,
   BreadcrumbItem,

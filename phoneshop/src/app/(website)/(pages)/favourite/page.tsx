@@ -1,6 +1,6 @@
 "use client"
 import Container from '@/components/Container'
-import FavouritePage from '@/components/FavouritePage'
+import FavouritePage from './FavouritePage'
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import Link from 'next/link'

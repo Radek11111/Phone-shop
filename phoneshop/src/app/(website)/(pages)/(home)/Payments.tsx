@@ -14,7 +14,7 @@ import "swiper/css/pagination";
 import "./style.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
-import Container from "../Container";
+import Container from "../../../../components/Container";
 
 export default function Payments() {
   return (

@@ -1,4 +1,4 @@
-import CartPage from "@/components/CartPage";
+import CartPage from "@/app/(website)/(pages)/cart/CartPage";
 import Container from "@/components/Container";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Link from "next/link";

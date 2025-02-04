@@ -1,6 +1,6 @@
-import HomeSlide from "@/components/Home/HomeSlide";
-import Payments from "@/components/Home/Payments";
-import {Reviews} from "@/components/Home/Reviews";
+import HomeSlide from "./HomeSlide";
+import Payments from "./Payments";
+import {Reviews} from "./Reviews";
 import React from "react";
 
 export default function Home() {

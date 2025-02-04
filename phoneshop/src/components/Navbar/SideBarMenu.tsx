@@ -66,7 +66,7 @@ export default function SideBarMenu() {
                 <CiShoppingCart size={30} /> Cart
               </Link>
               <Link
-                href="/favorites"
+                href="/favourite"
                 className="flex items-center gap-2 hover:text-zinc-500 transition-colors"
                 onClick={handleLinkClick}
               >

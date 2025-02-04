@@ -4,8 +4,8 @@ import { HTMLAttributes, useEffect, useRef, useState } from "react";
 
 import { useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Phone from "../Phone";
-import MaxWidthWrapper from "../MaxWidthWrapper";
+import Phone from "../../../../components/Phone";
+import MaxWidthWrapper from "../../../../components/MaxWidthWrapper";
 
 const PHONES = [
   "/Smartfon-APPLE1.jpg",
@@ -96,16 +96,15 @@ function Review({ imgSrc, className, ...props }: ReviewProps) {
     ];
 
   return (
-    
     <div
       className={cn(
         "animate-fade-in rounded-[2.25rem] bg-white p-6 opacity-0 shadow-xl shadow-slate-900/5",
         className
       )}
       style={{ animationDelay }}
-      {...props} 
+      {...props}
     >
-      <Phone imgSrc={imgSrc} /> 
+      <Phone imgSrc={imgSrc} />
     </div>
   );
 }

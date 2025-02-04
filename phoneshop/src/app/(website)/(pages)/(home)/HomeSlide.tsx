@@ -1,13 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Container from "../Container";
-import { Skeleton } from "../ui/skeleton";
+import Container from "../../../../components/Container";
+import { Skeleton } from "../../../../components/ui/skeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "../../../../components/ui/button";
 import Link from "next/link";
-
 
 export default function HomeSlide() {
   const [loading, setLoading] = useState(false);
@@ -17,10 +16,10 @@ export default function HomeSlide() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length); 
-    }, 3000); 
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 3000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [images.length]);
 
   return (

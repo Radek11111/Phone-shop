@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getProducts } from "../../actions/product";
+import { getProducts } from "../../../../../actions/product";
 import type { Product } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,8 +8,8 @@ import { Pagination } from "@mui/material";
 import { FaHeart } from "react-icons/fa";
 import { RiHeart3Line } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
-import { IRootState, AppDispatch } from "../store";
-import { toggleFavourite } from "../store/favouritesSlice";
+import { IRootState, AppDispatch } from "../../../../store";
+import { toggleFavourite } from "../../../../store/favouritesSlice";
 
 export default function StorePage() {
   const router = useRouter();
