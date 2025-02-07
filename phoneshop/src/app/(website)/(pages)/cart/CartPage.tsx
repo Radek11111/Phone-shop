@@ -40,8 +40,8 @@ export default function Cart() {
     0
   );
 
-  const handleCheckout = () => {
-    router.push("/checkout"); 
+  const handlePreview = () => {
+    router.push("/preview"); 
   };
 
   return (
@@ -94,10 +94,10 @@ export default function Cart() {
           <div className="p-4 bg-gray-100 rounded-lg shadow-md text-right">
             <p className="text-xl font-bold">Subtotal: ${subtotal.toFixed(2)}</p>
             <Button
-              onClick={handleCheckout}
+              onClick={handlePreview}
               className="mt-4 bg-green-600 hover:bg-green-700 text-white"
             >
-              Proceed to Checkout
+              Proceed your order
             </Button>
           </div>
         </div>
