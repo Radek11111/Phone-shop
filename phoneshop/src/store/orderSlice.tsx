@@ -1,7 +1,11 @@
-import { OrderDetails, OrderState } from "@/types";
+import { OrderDetails } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: OrderState = {
+export interface OrderStateRedux {
+  orders: OrderDetails[];
+}
+
+const initialState: OrderStateRedux = {
   orders: [],
 };
 

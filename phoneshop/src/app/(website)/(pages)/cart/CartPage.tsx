@@ -1,7 +1,7 @@
 "use client";
 import { IRootState } from "@/store";
 import { removeProductById, updateToCart } from "@/store/cartSlice";
-import { CartItem } from "@/types";
+import { CartItem } from "@prisma/client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

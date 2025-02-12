@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { Product, CartItem } from "@/types";
+
+import {Product, CartItem } from "@prisma/client";
 import Container from "@/components/Container";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
@@ -55,6 +56,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
           amount: product.price * qty,
           qty,
           title: product.title,
+          orderDetailsId: "",
           
         })
       );

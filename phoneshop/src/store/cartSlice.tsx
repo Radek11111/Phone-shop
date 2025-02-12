@@ -1,5 +1,9 @@
-import { CartItem, CartState } from "@/types";
+import { CartItem } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface CartState {
+  cartItems: CartItem[];
+}
 
 const saveCartToLocalStorage = (cart: CartItem[]) => {
   if (typeof window !== "undefined") {
@@ -7,11 +11,11 @@ const saveCartToLocalStorage = (cart: CartItem[]) => {
   }
 };
 
-function loadCartFromLocalStorage() {
+function loadCartFromLocalStorage(): CartItem[] {
   try {
-    if (typeof window === "undefined") return []; 
+    if (typeof window === "undefined") return [];
 
-    const cartData = localStorage.getItem("cartItems"); 
+    const cartData = localStorage.getItem("cartItems");
     return cartData ? JSON.parse(cartData) : [];
   } catch (error) {
     console.error("Error loading cart from localStorage:", error);
@@ -21,7 +25,6 @@ function loadCartFromLocalStorage() {
 
 const initialState: CartState = {
   cartItems: loadCartFromLocalStorage(),
-  items: [],
 };
 
 export const cartSlice = createSlice({
@@ -29,18 +32,21 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action: PayloadAction<CartItem>) {
-      const newItem = {
-        ...action.payload,
-        title: action.payload.title,
-      };
-      state.cartItems.push(newItem);
+      const newItem = action.payload;
+     
+      const existingItem = state.cartItems.find(item => item.id === newItem.id);
+
+      if (existingItem) {
+        
+        existingItem.qty += newItem.qty;
+      } else {
+       
+        state.cartItems.push(newItem);
+      }
       saveCartToLocalStorage(state.cartItems);
     },
     updateToCart(state, action: PayloadAction<CartItem[]>) {
-      state.cartItems = action.payload.map((item) => ({
-        ...item,
-        title: item.title,
-      }));
+      state.cartItems = action.payload;
       saveCartToLocalStorage(state.cartItems);
     },
     removeProductById(state, action: PayloadAction<string | number>) {
@@ -53,13 +59,13 @@ export const cartSlice = createSlice({
       state.cartItems = [];
       saveCartToLocalStorage(state.cartItems);
     },
-    resetState: (state) => {
+    resetState(state) {
       state.cartItems = [];
       saveCartToLocalStorage(state.cartItems);
     },
-    clearCart: (state) => {
-      state.items = [];
-      saveCartToLocalStorage(state.cartItems)
+    clearCart(state) {
+      state.cartItems = [];
+      saveCartToLocalStorage(state.cartItems);
     },
   },
 });

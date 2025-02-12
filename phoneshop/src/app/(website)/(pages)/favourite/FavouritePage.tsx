@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../../../../../actions/product";
-import { Product } from "@/types";
+import { Product } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";

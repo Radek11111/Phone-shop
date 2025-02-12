@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const saveFavouritesToLocalStorage = (favourites: number[]) => {
+const saveFavouritesToLocalStorage = (favourites: string[]) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("likedProducts", JSON.stringify(favourites));
   }
 };
 
-const loadFavouritesFromLocalStorage = (): number[] => {
+const loadFavouritesFromLocalStorage = (): string[] => {
   if (typeof window !== "undefined") {
     const storedFavourites = localStorage.getItem("likedProducts");
     if (storedFavourites) {
@@ -17,7 +17,7 @@ const loadFavouritesFromLocalStorage = (): number[] => {
 };
 
 export interface FavouritesState {
-  likedProducts: number[];
+  likedProducts: string[];
 }
 
 const initialState: FavouritesState = {
@@ -28,7 +28,7 @@ export const favouritesSlice = createSlice({
   name: "favourites",
   initialState,
   reducers: {
-    toggleFavourite(state, action: PayloadAction<number>) {
+    toggleFavourite(state, action: PayloadAction<string>) {
       const productId = action.payload;
       const index = state.likedProducts.indexOf(productId);
       if (index === -1) {
