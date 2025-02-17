@@ -1,6 +1,10 @@
 "use client";
 import { IRootState } from "@/store";
-import { removeProductById, updateToCart } from "@/store/cartSlice";
+import {
+  CartItemRedux,
+  removeProductById,
+  updateCart,
+} from "@/store/cartSlice";
 import { CartItem } from "@prisma/client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -13,7 +17,7 @@ export default function Cart() {
   const [hydrated, setHydrated] = useState(false);
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     setHydrated(true);
@@ -21,46 +25,50 @@ export default function Cart() {
 
   if (!hydrated) return null;
 
-  const handleRemoveItem = (item: { id: string | number }) => {
+  const handleRemoveItem = (item: { id: string }) => {
     dispatch(removeProductById(item.id));
   };
 
-  const handleUpdateQty = (item: { id: string | number }, qty: number) => {
+  const handleUpdateQty = (item: { id: string }, qty: number) => {
     if (qty > 0) {
       const updatedCart = cart.map((cartItem) =>
         cartItem.id === item.id ? { ...cartItem, qty } : cartItem
       );
-      dispatch(updateToCart(updatedCart));
+      dispatch(updateCart(updatedCart));
     }
   };
 
   const subtotal = cart.reduce(
-    (accumulator: number, currentValue: CartItem) =>
+    (accumulator: number, currentValue: CartItemRedux) =>
       accumulator + currentValue.price * currentValue.qty,
     0
   );
 
   const handlePreview = () => {
-    router.push("/preview"); 
+    router.push("/preview");
   };
 
   return (
     <div className="p-4">
-     
       {cart.length > 0 ? (
         <div className="grid gap-4">
           {cart.map((item) => (
-            <Card key={item.id} className="flex flex-col md:flex-row items-center gap-4 p-4 shadow-md">
+            <Card
+              key={item.id}
+              className="flex flex-col md:flex-row items-center gap-4 p-4 shadow-md"
+            >
               <Image
                 src={item.thumbnail}
                 width={150}
                 height={150}
-                alt={item.title}
+                alt={item.name}
                 className="rounded-lg"
               />
               <CardContent className="flex-1">
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold">{item.title}</CardTitle>
+                  <CardTitle className="text-lg font-semibold">
+                    {item.name}
+                  </CardTitle>
                 </CardHeader>
                 <p className="text-gray-600">Price: ${item.price.toFixed(2)}</p>
                 <div className="flex items-center gap-2 mt-2">
@@ -92,7 +100,9 @@ export default function Cart() {
             </Card>
           ))}
           <div className="p-4 bg-gray-100 rounded-lg shadow-md text-right">
-            <p className="text-xl font-bold">Subtotal: ${subtotal.toFixed(2)}</p>
+            <p className="text-xl font-bold">
+              Subtotal: ${subtotal.toFixed(2)}
+            </p>
             <Button
               onClick={handlePreview}
               className="mt-4 bg-green-600 hover:bg-green-700 text-white"
