@@ -2,17 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 
-import {Product, CartItem } from "@prisma/client";
+import {Product } from "@prisma/client";
 import Container from "@/components/Container";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, updateToCart } from "@/store/cartSlice";
+import { addToCart, CartItemRedux, updateCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IRootState } from "@/store";
-
 
 export default function ProductPage({ product }: { product: Product | null }) {
   const cart = useSelector((state: IRootState) => state.cart);
@@ -22,7 +21,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
 
   useEffect(() => {
     const cartItem = cart.cartItems.find(
-      (item: CartItem) => item.id === product?.id
+      (item: CartItemRedux) => item.id === product?.id
     );
     if (cartItem) {
       setQty(cartItem.qty);
@@ -44,7 +43,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
       const updatedCart = cart.cartItems.map((item) =>
         item.id === product.id ? { ...item, qty: item.qty + qty } : item
       );
-      dispatch(updateToCart(updatedCart));
+      dispatch(updateCart(updatedCart));
       toast.success("Cart updated");
     } else {
       dispatch(
@@ -53,11 +52,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
           name: product.title,
           price: product.price,
           thumbnail: product.thumbnail,
-          amount: product.price * qty,
           qty,
-          title: product.title,
-          orderDetailsId: "",
-          
         })
       );
       toast.success("Product added to cart");
@@ -81,7 +76,6 @@ export default function ProductPage({ product }: { product: Product | null }) {
   return (
     <section className="my-10 flex justify-center items-center">
       <Container>
-       
         <h1 className="text-3xl font-bold mb-8 text-center">{product.title}</h1>
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           <Zoom>
@@ -96,6 +90,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
             <p className="text-lg text-gray-700 text-center md:text-left">
               {product.description}
             </p>
+            <span>{product.price}</span>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center ">
