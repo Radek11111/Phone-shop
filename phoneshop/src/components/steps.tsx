@@ -4,26 +4,21 @@ import { cn } from '@/lib/utils';
 import React from 'react'
 import { usePathname } from "next/navigation";
 
-const STEPS = [
+export const STEPS = [
   {
-    name: "Step 1: Review Your products",
-    description: "Check your products and quantities",
-    url: "/upload",
-  },
-  {
-    name: "Step 2: Enter Shipping Details",
+    name: "Step 1: Enter Shipping Details",
     description: "choose your shipping method and enter your address",
-    url: "/design",
+    url: "/preview/shipping",
   },
   {
-    name: "Step 3: Choose a Payment Method",
+    name: "Step 2: Choose a Payment Method",
     description: "Choose a payment method and enter your payment details",
-    url: "/preview",
+    url: "/preview/payment",
   },
   {
-    name: "Step 4: Confirm Your Order",
+    name: "Step 3: Confirm Your Order",
     description: "clofirm your order and wait for delivery",
-    url: "/preview",
+    url: "/preview/confirmation",
   },
 ];
 

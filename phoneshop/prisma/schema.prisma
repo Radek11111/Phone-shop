@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+enum OrderStatus {
+  awaiting_payment
+  awaiting_shipment
+  shipped
+  delivered
+  cancelled
+}
+
 model CartItem {
   id               String    @id @default(cuid())
   name             String
@@ -45,19 +54,41 @@ model Dimensions {
 
 model OrderDetails {
   id              String   @id @default(cuid()) 
-  shippingAddress String
-  paymentMethod   String
-  shippingMethod  String
+  status          OrderStatus   @default(awaiting_shipment)
+
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String?
+  billingAddress    BillingAddress?  @relation(fields: [billingAddressId], references: [id])
+  billingAddressId  String?
   total           Float
   items           CartItem[]
   orderStateId    String
-  orderState      OrderState @relation(fields: [orderStateId], references: [id], onDelete: Cascade)
   createdAt       DateTime  @default(now())
+  isPaid          Boolean       @default(false)
 }
 
 
-model OrderState {
-  id     String        @id @default(cuid()) 
-  status String
-  orders OrderDetails[]
+
+model ShippingAddress {
+  id          String  @id @default(cuid())
+  name        String
+  street      String
+  city        String
+  postalCode  String
+  country     String
+  state       String?
+  phoneNumber String?
+  orders      OrderDetails[]
+}
+
+model BillingAddress {
+  id          String  @id @default(cuid())
+  name        String
+  street      String
+  city        String
+  postalCode  String
+  country     String
+  state       String?
+  phoneNumber String?
+  orders      OrderDetails[]
 }

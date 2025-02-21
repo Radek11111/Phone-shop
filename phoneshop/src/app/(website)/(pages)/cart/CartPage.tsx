@@ -5,7 +5,6 @@ import {
   removeProductById,
   updateCart,
 } from "@/store/cartSlice";
-import { CartItem } from "@prisma/client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +44,7 @@ export default function Cart() {
   );
 
   const handlePreview = () => {
-    router.push("/preview");
+    router.push("/preview/shipping");
   };
 
   return (
