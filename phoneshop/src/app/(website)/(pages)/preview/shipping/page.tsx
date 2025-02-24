@@ -5,8 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { db } from "@/db";
-
+import axios from "axios";
 
 const shippingSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -34,20 +33,12 @@ export default function Shipping() {
 
   const onSubmit: SubmitHandler<ShippingForm> = async (data) => {
     try {
-  
-      const shippingAddress = await db.shippingAddress.create({
-        data: {
-          name: data.name,
-          street: data.street,
-          city: data.city,
-          postalCode: data.postalCode,
-          country: data.country,
-          phoneNumber: data.phoneNumber,
-          state: data.state,
-        },
-      });
+      const response = await axios.post("/api/shipping", data);
 
-      
+      if (response.status !== 200) {
+        throw new Error("Failed to save shipping details.");
+      }
+
       router.push("/preview/payment");
     } catch (err) {
       setError("Failed to save shipping details. Please try again.");
@@ -61,7 +52,10 @@ export default function Shipping() {
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
             Full Name
           </label>
           <input
@@ -70,11 +64,16 @@ export default function Shipping() {
             {...register("name")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="street" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="street"
+            className="block text-sm font-medium text-gray-700"
+          >
             Street Address
           </label>
           <input
@@ -83,11 +82,16 @@ export default function Shipping() {
             {...register("street")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
-          {errors.street && <p className="text-red-500 text-sm">{errors.street.message}</p>}
+          {errors.street && (
+            <p className="text-red-500 text-sm">{errors.street.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="city"
+            className="block text-sm font-medium text-gray-700"
+          >
             City
           </label>
           <input
@@ -96,11 +100,16 @@ export default function Shipping() {
             {...register("city")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
-          {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
+          {errors.city && (
+            <p className="text-red-500 text-sm">{errors.city.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="postalCode"
+            className="block text-sm font-medium text-gray-700"
+          >
             Postal Code
           </label>
           <input
@@ -109,11 +118,16 @@ export default function Shipping() {
             {...register("postalCode")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
-          {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode.message}</p>}
+          {errors.postalCode && (
+            <p className="text-red-500 text-sm">{errors.postalCode.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="country"
+            className="block text-sm font-medium text-gray-700"
+          >
             Country
           </label>
           <input
@@ -122,11 +136,16 @@ export default function Shipping() {
             {...register("country")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
-          {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
+          {errors.country && (
+            <p className="text-red-500 text-sm">{errors.country.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email
           </label>
           <input
@@ -138,7 +157,10 @@ export default function Shipping() {
         </div>
 
         <div>
-          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="phoneNumber"
+            className="block text-sm font-medium text-gray-700"
+          >
             Phone Number (optional)
           </label>
           <input
@@ -154,7 +176,6 @@ export default function Shipping() {
         >
           Next
         </button>
-      
       </form>
     </div>
   );
