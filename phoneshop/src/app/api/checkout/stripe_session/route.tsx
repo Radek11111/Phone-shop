@@ -10,11 +10,11 @@ export async function POST(req: NextRequest) {
     console.log("Received orderId:", orderId);
 
     if (!orderId) {
-      console.log("Missing orderId");
+      console.log("No orderId provided");
       return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
     }
 
-    console.log("Fetching order from database...");
+    console.log("Querying database for order:", orderId);
     const order = await db.orderDetails.findUnique({
       where: { id: orderId },
       include: { items: true },
@@ -24,26 +24,26 @@ export async function POST(req: NextRequest) {
       console.log("Order not found for orderId:", orderId);
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
-    console.log("Order found:", order);
+    console.log("Order retrieved:", JSON.stringify(order, null, 2));
 
-    console.log("Creating line items...");
+    console.log("Generating line items...");
     const lineItems = order.items.map((item) => {
-      console.log("Processing item:", item);
-      return {
+      const lineItem = {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.title,
-            images: [item.thumbnail],
+            name: item.title || "Untitled", 
+            images: item.thumbnail ? [item.thumbnail] : [],
           },
           unit_amount: Math.round(item.price * 100),
         },
         quantity: item.qty,
       };
+      console.log("Generated line item:", lineItem);
+      return lineItem;
     });
-    console.log("Line items created:", lineItems);
 
-    console.log("Creating Stripe session...");
+    console.log("Creating Stripe session with lineItems:", lineItems);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",

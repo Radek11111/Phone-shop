@@ -54,7 +54,7 @@ model Dimensions {
 
 model OrderDetails {
   id              String   @id @default(cuid()) 
-  status          OrderStatus   @default(awaiting_shipment)
+  status          OrderStatus   @default(awaiting_payment)
 
   shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String?
@@ -62,7 +62,7 @@ model OrderDetails {
   billingAddressId  String?
   total           Float
   items           CartItem[]
-  orderStateId    String
+  orderId    String?
   createdAt       DateTime  @default(now())
   isPaid          Boolean       @default(false)
 }

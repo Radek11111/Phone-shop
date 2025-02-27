@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Cart() {
   const [hydrated, setHydrated] = useState(false);
@@ -43,8 +44,34 @@ export default function Cart() {
     0
   );
 
-  const handlePreview = () => {
-    router.push("/preview/shipping");
+  const handleProceedOrder = async () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "/api/orders/",
+        {
+          items: cart,
+          total: subtotal,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const { orderId } = response.data;
+      if (!orderId) {
+        throw new Error("Order ID not returned from server");
+      }
+
+      router.push(`/preview/shipping?orderId=${orderId}`);
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -103,7 +130,7 @@ export default function Cart() {
               Subtotal: ${subtotal.toFixed(2)}
             </p>
             <Button
-              onClick={handlePreview}
+              onClick={handleProceedOrder}
               className="mt-4 bg-green-600 hover:bg-green-700 text-white"
             >
               Proceed your order
