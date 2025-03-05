@@ -67,7 +67,7 @@ export default function Cart() {
         throw new Error("Order ID not returned from server");
       }
 
-      router.push(`/preview/shipping?orderId=${orderId}`);
+      router.push(`/checkout/shipping?orderId=${orderId}`);
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Something went wrong. Please try again.");

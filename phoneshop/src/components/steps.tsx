@@ -8,17 +8,17 @@ export const STEPS = [
   {
     name: "Step 1: Enter Shipping Details",
     description: "choose your shipping method and enter your address",
-    url: "/preview/shipping",
+    url: "/checkout/shipping",
   },
   {
     name: "Step 2: Choose a Payment Method",
     description: "Choose a payment method and enter your payment details",
-    url: "/preview/payment",
+    url: "/checkout/payment",
   },
   {
     name: "Step 3: Confirm Your Order",
-    description: "clofirm your order and wait for delivery",
-    url: "/preview/confirmation",
+    description: "confirm your order and wait for delivery",
+    url: "/checkout/confirmation",
   },
 ];
 
