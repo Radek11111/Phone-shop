@@ -12,9 +12,12 @@ import { IRootState } from "@/store";
 import Image from "next/image";
 import { CartItemRedux } from "@/store/cartSlice";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
-);
+const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+if (!stripeKey) {
+  throw new Error("Stripe public key is missing!");
+}
+const stripePromise = loadStripe(stripeKey);
+
 
 const shippingSchema = z.object({
   name: z.string().min(1, "Name is required"),

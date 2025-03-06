@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     const order = await db.orderDetails.create({
       data: {
         total,
-        orderStateId: "initial", 
+        orderStateId: "some-valid-id",
         status: "awaiting_payment",
         items: {
           create: items.map((item: any) => ({

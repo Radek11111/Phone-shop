@@ -34,7 +34,7 @@ export default function Cart() {
       const updatedCart = cart.map((cartItem) =>
         cartItem.id === item.id ? { ...cartItem, qty } : cartItem
       );
-      dispatch(updateCart(updatedCart));
+      dispatch(updateCart({ id: item.id, qty }));
     }
   };
 
