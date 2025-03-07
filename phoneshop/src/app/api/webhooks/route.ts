@@ -1,3 +1,4 @@
+"use server"
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { db } from "@/db";
@@ -7,12 +8,12 @@ import { stripe } from "@/lib/stripe";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     let event;
-    const sig = req.headers["stripe-signature"];
+    const signature = req.headers["stripe-signature"];
 
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
-        sig as string,
+        signature as string,
         process.env.STRIPE_WEBHOOK_SECRET as string
       );
     } catch (err) {
@@ -40,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    res.json({ received: true });
+   return res.json({ received: true });
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
