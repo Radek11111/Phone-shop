@@ -19,7 +19,7 @@ export default function CartBar({
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
 
-  const handleRemoveItem = (item: { id: string | number }) => {
+  const handleRemoveItem = (item: { id: string }) => {
     dispatch(removeProductById(item.id));
   };
 
@@ -32,9 +32,7 @@ export default function CartBar({
       console.log("Koszyk w localStorage:", storedCart ? JSON.parse(storedCart) : "Brak danych");
     }, []);
   
-    React.useEffect(() => {
-      console.log("Cart from Redux store:", cart);
-    }, [cart]);
+
   return (
     <AnimatePresence>
       {openCartBar && (
