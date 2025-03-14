@@ -5,9 +5,3 @@ export const CARRIERS = [
     { id: "dpd", name: "DPD Classic" },
 ];
   
-export const PAYMENT_METHODS = [
-    { id: "card", name: "Credit/Debit Card" },
-    { id: "paypal", name: "PayPal" },
-    { id: "link", name: "link" },
-  
-  ];

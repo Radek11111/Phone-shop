@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/store";
@@ -27,11 +27,11 @@ export default function CartBar({
     .reduce((total, item) => total + item.price * item.qty, 0)
     .toFixed(2);
 
-    React.useEffect(() => {
-      const storedCart = localStorage.getItem("cartItems");
-      console.log("Koszyk w localStorage:", storedCart ? JSON.parse(storedCart) : "Brak danych");
-    }, []);
-  
+  useEffect(() => {
+    
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log("Koszyk w localStorage:", cart);
+  }, [cart]);
 
   return (
     <AnimatePresence>

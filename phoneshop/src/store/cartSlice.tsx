@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItemRedux {
-  id: string ;
+  id: string;
   name: string;
   price: number;
   qty: number;
@@ -14,14 +14,14 @@ interface CartState {
 
 const saveCartToLocalStorage = (cart: CartItemRedux[]) => {
   if (typeof window !== "undefined") {
-    localStorage.setItem("cartItems", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 };
 
 const loadCartFromLocalStorage = (): CartItemRedux[] => {
   try {
     if (typeof window === "undefined") return [];
-    const cartData = localStorage.getItem("cartItems");
+    const cartData = localStorage.getItem("cart"); 
     return cartData ? JSON.parse(cartData) : [];
   } catch (error) {
     console.error("Error loading cart from localStorage:", error);
@@ -59,7 +59,6 @@ export const cartSlice = createSlice({
       }
       saveCartToLocalStorage(state.cartItems);
     },
-
     removeProductById(state, action: PayloadAction<string>) {
       state.cartItems = state.cartItems.filter(
         (product) => product.id !== action.payload
@@ -68,7 +67,7 @@ export const cartSlice = createSlice({
     },
     clearCart(state) {
       state.cartItems = [];
-      saveCartToLocalStorage(state.cartItems);
+      saveCartToLocalStorage(state.cartItems); 
     },
   },
 });

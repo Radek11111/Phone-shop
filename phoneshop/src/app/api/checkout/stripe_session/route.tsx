@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.title || "Untitled", 
+            name: item.title || "Untitled",
             images: item.thumbnail ? [item.thumbnail] : [],
           },
           unit_amount: Math.round(item.price * 100),
@@ -45,9 +45,9 @@ export async function POST(req: NextRequest) {
 
     console.log("Creating Stripe session with lineItems:", lineItems);
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card","paypal"],
+      payment_method_types: ["card", "paypal"],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/payment?orderId=${orderId}&session_id={CHECKOUT_SESSION_ID}&success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
       metadata: { orderId: order.id },
       line_items: lineItems,

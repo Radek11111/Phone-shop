@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+
 
 export default function Cart() {
   const [hydrated, setHydrated] = useState(false);
@@ -21,7 +21,9 @@ export default function Cart() {
 
   useEffect(() => {
     setHydrated(true);
-  }, []);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   if (!hydrated) return null;
 
@@ -31,9 +33,6 @@ export default function Cart() {
 
   const handleUpdateQty = (item: { id: string }, qty: number) => {
     if (qty > 0) {
-      const updatedCart = cart.map((cartItem) =>
-        cartItem.id === item.id ? { ...cartItem, qty } : cartItem
-      );
       dispatch(updateCart({ id: item.id, qty }));
     }
   };
@@ -44,34 +43,13 @@ export default function Cart() {
     0
   );
 
-  const handleProceedOrder = async () => {
+  const handleProceedOrder = () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
-
-    try {
-      const response = await axios.post(
-        "/api/orders/",
-        {
-          items: cart,
-          total: subtotal,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      const { orderId } = response.data;
-      if (!orderId) {
-        throw new Error("Order ID not returned from server");
-      }
-
-      router.push(`/checkout/shipping?orderId=${orderId}`);
-    } catch (error) {
-      console.error("Error creating order:", error);
-      alert("Something went wrong. Please try again.");
-    }
+ 
+    router.push("/checkout/shipping");
   };
 
   return (
@@ -133,7 +111,7 @@ export default function Cart() {
               onClick={handleProceedOrder}
               className="mt-4 bg-green-600 hover:bg-green-700 text-white"
             >
-              Proceed your order
+              Proceed to Shipping
             </Button>
           </div>
         </div>
