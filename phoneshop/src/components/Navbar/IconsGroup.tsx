@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
-import { RiHeart3Line } from "react-icons/ri";
 import {
   CiLogin,
   CiSearch,
@@ -16,7 +14,8 @@ import CartBar from "./CartBar";
 import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 import { IRootState } from "@/store";
-import Link from "next/link";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function IconsGroup({
   openSearchBar,
@@ -32,7 +31,7 @@ export default function IconsGroup({
   const { isSignedIn } = useUser();
   const cart = useSelector((state: IRootState) => state.cart.cartItems || []);
 
-  const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [itemsCount, setItemsCount] = useState(0);
   const router = useRouter();
 
@@ -40,7 +39,7 @@ export default function IconsGroup({
     if (Array.isArray(cart)) {
       setItemsCount(cart.reduce((total, item) => total + item.qty, 0));
     } else {
-      setItemsCount(0); 
+      setItemsCount(0);
     }
   }, [cart]);
 
@@ -48,28 +47,36 @@ export default function IconsGroup({
     <>
       <div className="hidden lg:flex items-center gap-5">
         <div className="p-5">
-          <Link
-            href="/store"
-            className="flex items-center gap-2  hover:font-bold transition-transform hover:scale-110"
+          <Button
+            variant="nostyle"
+            onClick={() => router.push("/store")}
+            className="rounded-full p-2 hover:bg-gray-200 transition font-extrabold"
           >
-            <CiShop size={30} className=" " />{" "}
-            <span className="hover:font-bold">Store</span>
-          </Link>
+            <CiShop
+              size={35}
+              className="text-gray-900 transition-transform duration-200 hover:scale-110 hover:font-extrabold"
+            />
+          </Button>
         </div>
         <div className="">
-          <Link
-            href="/favourite"
-            className="flex items-center gap-2 transition-transform hover:scale-110"
-            onMouseEnter={() => setIsFavoriteHovered(true)}
-            onMouseLeave={() => setIsFavoriteHovered(false)}
+          <Button
+            variant="nostyle"
+            className="rounded-full p-2 transition"
+            onMouseEnter={() => setIsFavorite(true)}
+            onMouseLeave={() => setIsFavorite(false)}
           >
-            {isFavoriteHovered ? (
-              <FaHeart size={30} className="text-red-600 transition-all" />
+            {isFavorite ? (
+              <FavoriteIcon
+                fontSize="large"
+                className="text-red-500 transition-colors duration-200"
+              />
             ) : (
-              <RiHeart3Line size={30} className="transition-all" />
+              <FavoriteBorderOutlinedIcon
+                fontSize="large"
+                className="text-gray-700  hover:text-red-600 transition-colors duration-200"
+              />
             )}
-            <span className="hover:font-bold">Favorite</span>
-          </Link>
+          </Button>
         </div>
       </div>
 

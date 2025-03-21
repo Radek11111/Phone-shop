@@ -7,6 +7,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
 import { Button } from "../../../../components/ui/button";
 import Link from "next/link";
+import ShinyText from "@/components/ShinyText";
 
 export default function HomeSlide() {
   const [loading, setLoading] = useState(false);
@@ -49,21 +50,7 @@ export default function HomeSlide() {
                 backgroundPosition: "center",
                 transition: "background-image 1s ease-in-out",
               }}
-            >
-              <div className="absolute inset-0 bg-black bg-opacity-30 z-10"></div>
-
-              <div className="relative z-20 flex items-center justify-center left-40">
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="hover:shadow-button px-12 py-8 bg-white bg-opacity-40 text-black hover:bg-opacity-90 hover:text-white"
-                >
-                  <Link href="/store" className="text-xl">
-                    BUY NOW
-                  </Link>
-                </Button>
-              </div>
-            </SwiperSlide>
+            ></SwiperSlide>
           </Swiper>
         )}
       </Container>

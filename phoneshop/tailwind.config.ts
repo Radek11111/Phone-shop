@@ -59,6 +59,10 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        shine: {
+          '0%': { 'background-position': '100%' },
+          '100%': { 'background-position': '-100%' },
+        },
         "fade-in": {
           from: {
             opacity: "0",
@@ -78,6 +82,7 @@ const config = {
         },
       },
       animation: {
+        shine: "shine 5s linear infinite",
         marquee: "marquee var(--marquee-duration) linear infinite",
         "fade-in": "fade-in 0.5s linear forwards",
         flashing: "flashing 1.4s infinite linear ",
