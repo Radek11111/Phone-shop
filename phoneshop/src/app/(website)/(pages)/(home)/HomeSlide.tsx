@@ -5,9 +5,7 @@ import { Skeleton } from "../../../../components/ui/skeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
-import { Button } from "../../../../components/ui/button";
-import Link from "next/link";
-import ShinyText from "@/components/ShinyText";
+
 
 export default function HomeSlide() {
   const [loading, setLoading] = useState(false);

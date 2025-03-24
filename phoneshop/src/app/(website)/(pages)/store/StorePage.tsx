@@ -65,7 +65,7 @@ export default function StorePage() {
         {paginatedProducts.map((item: Product) => (
           <div
             key={item.id}
-            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
+            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow bg-white h-64 w-96"
           >
             <div
               className="absolute top-2 right-2 cursor-pointer"
@@ -93,6 +93,7 @@ export default function StorePage() {
                 ? `${item.description.substring(0, 50)} ...`
                 : item.description}
             </p>
+            <span>{item.price} $</span>
           </div>
         ))}
       </div>

@@ -53,13 +53,13 @@ export default function Cart() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       {cart.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid gap-4 ">
           {cart.map((item) => (
             <Card
               key={item.id}
-              className="flex flex-col md:flex-row items-center gap-4 p-4 shadow-md"
+              className="flex flex-col md:flex-row items-center gap-4 p-4 shadow-md "
             >
               <Image
                 src={item.thumbnail}

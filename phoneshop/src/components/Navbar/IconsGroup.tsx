@@ -60,6 +60,7 @@ export default function IconsGroup({
         </div>
         <div className="">
           <Button
+            onClick={() => router.push("/favourite")}
             variant="nostyle"
             className="rounded-full p-2 transition"
             onMouseEnter={() => setIsFavorite(true)}
