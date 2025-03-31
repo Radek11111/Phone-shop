@@ -31,7 +31,7 @@ const Footer = () => {
             <ContactItem icon={<Phone size={20} />} text="+91 910 XXXXXXX" />
             <ContactItem
               icon={<Mail size={20} />}
-              text="rajendraaverma@gmail.com"
+              text="LoremIpsum@gmail.com"
             />
             <ContactItem icon={<MapPin size={20} />} text="Gdańsk" />
           </div>

@@ -39,13 +39,13 @@ export default function FavouritePage() {
         favouriteProducts.map((item) => (
           <div
             key={item.id}
-            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow"
+            className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow bg-white"
             onClick={() => router.push(`/products/${item.id}`)}
           >
             <div
-              className="absolute top-2 right-2 cursor-pointer z-10"
+              className="absolute top-2 right-2 cursor-pointer z-10 "
               onClick={(e) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 dispatch(toggleFavourite(item.id));
               }}
             >
