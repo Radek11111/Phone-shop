@@ -118,7 +118,7 @@ export default function CartBar({
           <div className="flex flex-col gap-4 mt-4">
             <Link
               href="/cart"
-              className="rounded-full py-3 flex justify-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="rounded-full py-3 flex justify-center bg-gradient-to-r from-zinc-600 to-zinc-600 text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               <ShinyText text="View Cart"/>
               

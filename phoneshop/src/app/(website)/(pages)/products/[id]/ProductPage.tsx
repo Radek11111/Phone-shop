@@ -81,7 +81,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
           className="container mx-auto px-4 py-12"
         >
           {/* Tytuł z gradientem */}
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-10 text-center bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-10 text-center bg-gradient-to-r from-zinc-600 via-zinc-500 to-slate-500 bg-clip-text text-transparent">
             {product.title}
           </h1>
 
@@ -103,7 +103,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
               <p className="text-lg text-gray-600 leading-relaxed text-center md:text-left">
                 {product.description}
               </p>
-              <span className="block text-3xl font-extrabold text-indigo-700 text-center md:text-left">
+              <span className="block text-3xl font-extrabold text-zinc-700 text-center md:text-left">
                 ${product.price.toFixed(2)}
               </span>
 
@@ -112,7 +112,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
                 {/* Przycisk "Add to Cart" */}
                 <Button
                   onClick={handleAddToCart}
-                  className="relative px-10 py-6 font-bold text-2xl right-3 mt-11 text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  className="relative px-10 py-6 font-bold text-2xl right-3 mt-11 text-white bg-gradient-to-r from-zinc-600 to-slate-600 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 >
                   <ShinyText text="Add to Cart"  />
                   <span className="absolute inset-0 rounded-full opacity-0 hover:opacity-20 bg-white transition-opacity duration-300"></span>
@@ -122,7 +122,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
                 <div className="flex items-center gap-2 bg-gray-100 p-2 rounded-full shadow-md mt-11">
                   <Button
                     onClick={() => updateQty("dec")}
-                    className="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-indigo-600 hover:shadow-md"
+                    className="w-10 h-10 bg-slate-500 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-slate-600 hover:shadow-md"
                   >
                     -
                   </Button>
@@ -131,7 +131,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
                   </span>
                   <Button
                     onClick={() => updateQty("inc")}
-                    className="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-indigo-600 hover:shadow-md"
+                    className="w-10 h-10 bg-slate-600 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-slate-700 hover:shadow-md"
                   >
                     +
                   </Button>

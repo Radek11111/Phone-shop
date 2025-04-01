@@ -138,7 +138,7 @@ export default function OrderSummary() {
               <h2 className="text-xl font-semibold">Dane Wysyłkowe</h2>
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="text-blue-500 hover:underline"
+                className="text-slate-500 hover:underline"
               >
                 {isEditing ? "Anuluj" : "Edytuj"}
               </button>
@@ -254,7 +254,7 @@ export default function OrderSummary() {
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600"
                   disabled={loading}
                 >
                   {loading ? "Zapisywanie..." : "Zapisz"}
@@ -283,7 +283,7 @@ export default function OrderSummary() {
 
           <button
             onClick={handlePayment}
-            className="w-full px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="w-full px-6 py-2 bg-zinc-500 text-white rounded-md hover:bg-zinc-600 transition-colors"
             disabled={loading || isEditing || orderData.isPaid}
           >
             {loading

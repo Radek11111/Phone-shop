@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import ShinyText from "@/components/ShinyText";
 
 
 export default function Cart() {
@@ -79,6 +80,7 @@ export default function Cart() {
                   <Button
                     onClick={() => handleUpdateQty(item, item.qty - 1)}
                     variant="secondary"
+                    className="hover:bg-slate-200"
                   >
                     -
                   </Button>
@@ -86,6 +88,7 @@ export default function Cart() {
                   <Button
                     onClick={() => handleUpdateQty(item, item.qty + 1)}
                     variant="secondary"
+                    className="hover:bg-slate-200"
                   >
                     +
                   </Button>
@@ -96,8 +99,7 @@ export default function Cart() {
               </CardContent>
               <Button
                 onClick={() => handleRemoveItem(item)}
-                variant="destructive"
-                className="mt-2 md:mt-0"
+                className="mt-2 md:mt-0 bg-slate-600"
               >
                 Remove
               </Button>
@@ -109,9 +111,9 @@ export default function Cart() {
             </p>
             <Button
               onClick={handleProceedOrder}
-              className="mt-4 bg-green-600 hover:bg-green-700 text-white"
+              className="rounded-full mt-4  bg-gradient-to-r from-zinc-600 to-zinc-600 text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
-              Proceed to Shipping
+              <ShinyText text="Proceed to Shipping" />
             </Button>
           </div>
         </div>
