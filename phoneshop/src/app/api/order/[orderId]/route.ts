@@ -4,7 +4,7 @@ import { db } from "@/db";
 
 export async function GET(req: NextRequest, { params }: { params: { orderId: string } }) {
     try {
-      const { orderId } = params;
+      const  { orderId } = params;
   
       const order = await db.orderDetails.findUnique({
         where: { id: orderId },
