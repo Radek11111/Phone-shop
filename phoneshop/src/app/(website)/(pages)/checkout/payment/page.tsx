@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { ShippingData, OrderData } from "@/types";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 if (!stripeKey) {
@@ -31,7 +33,6 @@ export default function OrderSummary() {
     }
 
     const fetchOrderData = async () => {
-      console.log(orderId);
       try {
         setLoading(true);
         const response = await axios.get(`/api/order/${orderId}`);
@@ -102,200 +103,221 @@ export default function OrderSummary() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">
-        Podsumowanie Zamówienia
-      </h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+    <>
+      <div className="mb-8">
+        <Button
+          variant="nostyle"
+          onClick={() => router.back()}
+          className="group flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
+        >
+          <ArrowLeft className="h-6 w-6 group-hover:-translate-x-1 transition-transform duration-200" />
+          <span className="text-lg font-bold">Back</span>
+        </Button>
+      </div>
+      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          Podsumowanie Zamówienia
+        </h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      {loading && !orderData ? (
-        <p>Ładowanie szczegółów zamówienia...</p>
-      ) : orderData ? (
-        <div>
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-2">Produkty</h2>
-            <div className="overflow-auto max-h-60 border p-4 rounded-md">
-              {orderData.items && orderData.items.length > 0 ? (
-                orderData.items.map(({ id, name, qty, price }) => (
-                  <div key={id} className="flex justify-between border-b py-2">
-                    <p>
-                      {name} x {qty}
-                    </p>
-                    <p>{(price * qty).toFixed(2)} USD</p>
+        {loading && !orderData ? (
+          <p>Ładowanie szczegółów zamówienia...</p>
+        ) : orderData ? (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-2">Produkty</h2>
+              <div className="overflow-auto max-h-60 border p-4 rounded-md">
+                {orderData.items && orderData.items.length > 0 ? (
+                  orderData.items.map(({ id, name, qty, price }) => (
+                    <div
+                      key={id}
+                      className="flex justify-between border-b py-2"
+                    >
+                      <p>
+                        {name} x {qty}
+                      </p>
+                      <p>{(price * qty).toFixed(2)} USD</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>Brak produktów w zamówieniu.</p>
+                )}
+              </div>
+              <p className="text-xl font-semibold mt-4">
+                Łącznie: {orderData.total.toFixed(2)} USD
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-semibold">Dane Wysyłkowe</h2>
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="text-slate-500 hover:underline"
+                >
+                  {isEditing ? "Anuluj" : "Edytuj"}
+                </button>
+              </div>
+
+              {isEditing && shippingData ? (
+                <form onSubmit={saveEditedData} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Imię i nazwisko
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.name || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          name: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
                   </div>
-                ))
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Ulica
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.street || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          street: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Miasto
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.city || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          city: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Kod pocztowy
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.postalCode || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          postalCode: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Kraj
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.country || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          country: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Stan/Województwo (opcjonalnie)
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.state || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          state: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Numer telefonu (opcjonalnie)
+                    </label>
+                    <input
+                      type="text"
+                      value={shippingData.phoneNumber || ""}
+                      onChange={(e) =>
+                        setShippingData({
+                          ...shippingData,
+                          phoneNumber: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full p-2 border rounded"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600"
+                    disabled={loading}
+                  >
+                    {loading ? "Zapisywanie..." : "Zapisz"}
+                  </button>
+                </form>
+              ) : shippingData ? (
+                <div className="border p-4 rounded-md">
+                  <p>{shippingData.name}</p>
+                  <p>{shippingData.street}</p>
+                  <p>
+                    {shippingData.city}, {shippingData.postalCode}
+                  </p>
+                  <p>{shippingData.country}</p>
+                  {shippingData.state && (
+                    <p>Stan/Województwo: {shippingData.state}</p>
+                  )}
+                  {shippingData.phoneNumber && (
+                    <p>Telefon: {shippingData.phoneNumber}</p>
+                  )}
+                  <p>Przewoźnik: {carrier}</p>
+                </div>
               ) : (
-                <p>Brak produktów w zamówieniu.</p>
+                <p>Brak danych wysyłkowych.</p>
               )}
             </div>
-            <p className="text-xl font-semibold mt-4">
-              Łącznie: {orderData.total.toFixed(2)} USD
-            </p>
+
+            <button
+              onClick={handlePayment}
+              className="w-full px-6 py-2 bg-zinc-500 text-white rounded-md hover:bg-zinc-600 transition-colors"
+              disabled={loading || isEditing || orderData.isPaid}
+            >
+              {loading
+                ? "Przetwarzanie..."
+                : orderData.isPaid
+                ? "Opłacone"
+                : "Zapłać"}
+            </button>
           </div>
-
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-semibold">Dane Wysyłkowe</h2>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="text-slate-500 hover:underline"
-              >
-                {isEditing ? "Anuluj" : "Edytuj"}
-              </button>
-            </div>
-
-            {isEditing && shippingData ? (
-              <form onSubmit={saveEditedData} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Imię i nazwisko
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.name || ""}
-                    onChange={(e) =>
-                      setShippingData({ ...shippingData, name: e.target.value })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Ulica
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.street || ""}
-                    onChange={(e) =>
-                      setShippingData({
-                        ...shippingData,
-                        street: e.target.value,
-                      })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Miasto
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.city || ""}
-                    onChange={(e) =>
-                      setShippingData({ ...shippingData, city: e.target.value })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Kod pocztowy
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.postalCode || ""}
-                    onChange={(e) =>
-                      setShippingData({
-                        ...shippingData,
-                        postalCode: e.target.value,
-                      })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Kraj
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.country || ""}
-                    onChange={(e) =>
-                      setShippingData({
-                        ...shippingData,
-                        country: e.target.value,
-                      })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Stan/Województwo (opcjonalnie)
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.state || ""}
-                    onChange={(e) =>
-                      setShippingData({
-                        ...shippingData,
-                        state: e.target.value,
-                      })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Numer telefonu (opcjonalnie)
-                  </label>
-                  <input
-                    type="text"
-                    value={shippingData.phoneNumber || ""}
-                    onChange={(e) =>
-                      setShippingData({
-                        ...shippingData,
-                        phoneNumber: e.target.value,
-                      })
-                    }
-                    className="mt-1 block w-full p-2 border rounded"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600"
-                  disabled={loading}
-                >
-                  {loading ? "Zapisywanie..." : "Zapisz"}
-                </button>
-              </form>
-            ) : shippingData ? (
-              <div className="border p-4 rounded-md">
-                <p>{shippingData.name}</p>
-                <p>{shippingData.street}</p>
-                <p>
-                  {shippingData.city}, {shippingData.postalCode}
-                </p>
-                <p>{shippingData.country}</p>
-                {shippingData.state && (
-                  <p>Stan/Województwo: {shippingData.state}</p>
-                )}
-                {shippingData.phoneNumber && (
-                  <p>Telefon: {shippingData.phoneNumber}</p>
-                )}
-                <p>Przewoźnik: {carrier}</p>
-              </div>
-            ) : (
-              <p>Brak danych wysyłkowych.</p>
-            )}
-          </div>
-
-          <button
-            onClick={handlePayment}
-            className="w-full px-6 py-2 bg-zinc-500 text-white rounded-md hover:bg-zinc-600 transition-colors"
-            disabled={loading || isEditing || orderData.isPaid}
-          >
-            {loading
-              ? "Przetwarzanie..."
-              : orderData.isPaid
-              ? "Opłacone"
-              : "Zapłać"}
-          </button>
-        </div>
-      ) : (
-        <p>Brak danych zamówienia.</p>
-      )}
-    </div>
+        ) : (
+          <p>Brak danych zamówienia.</p>
+        )}
+      </div>
+    </>
   );
 }

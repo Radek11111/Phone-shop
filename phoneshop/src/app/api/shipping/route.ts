@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 
@@ -18,9 +18,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, shippingAddress }, { status: 200 });
+    return NextResponse.json(
+      { success: true, shippingAddress },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error saving shipping details:", error);
-    return NextResponse.json({ error: "Failed to save shipping details" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save shipping details" },
+      { status: 500 }
+    );
   }
 }
+
