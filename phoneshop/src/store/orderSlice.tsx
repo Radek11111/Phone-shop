@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface OrderRedux {
   id?: string;
-  items: { id: string; name: string; price: number; qty: number }[];
+  items: { id: string; title: string; price: number; qty: number }[];
   shippingAddress: string;
   paymentMethod: string;
   shippingMethod: string;

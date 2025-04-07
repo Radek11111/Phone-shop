@@ -1,24 +1,19 @@
+import { CartItem } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CartItemRedux {
-  id: string;
-  name: string;
-  price: number;
-  qty: number;
-  thumbnail: string;
-}
+
 
 interface CartState {
-  cartItems: CartItemRedux[];
+  cartItems: CartItem[];
 }
 
-const saveCartToLocalStorage = (cart: CartItemRedux[]) => {
+const saveCartToLocalStorage = (cart: CartItem[]) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 };
 
-const loadCartFromLocalStorage = (): CartItemRedux[] => {
+const loadCartFromLocalStorage = (): CartItem[] => {
   try {
     if (typeof window === "undefined") return [];
     const cartData = localStorage.getItem("cart"); 
@@ -37,7 +32,7 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state, action: PayloadAction<CartItemRedux>) {
+    addToCart(state, action: PayloadAction<CartItem>) {
       const newItem = action.payload;
       const existingItem = state.cartItems.find(
         (item) => item.id === newItem.id

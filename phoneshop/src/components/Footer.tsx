@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import MaxWidthWrapper from './MaxWidthWrapper';
+import Link from "next/link";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 import { Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -14,7 +15,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center py-6">
           {/* Logo na lewo, wyśrodkowane pionowo */}
           <div className="flex items-center ">
-            <img className="h-12 mt-8 mb-0" src="/logo.svg" alt="Logo" />
+            <Image className="h-12 mt-8 mb-0" src="/logo.svg" alt="Logo" width={500} height={500} />
           </div>
 
           {/* Linki na prawo */}

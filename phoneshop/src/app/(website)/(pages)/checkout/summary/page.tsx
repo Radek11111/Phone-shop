@@ -10,7 +10,7 @@ export default function PaymentSummary() {
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") || "";
-  const [data, setData] = useState<any>(undefined); 
+  const [data, setData] = useState<any>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function PaymentSummary() {
         <div className="flex flex-col items-center gap-2">
           <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
           <h3 className="font-semibold text-xl">Loading your order...</h3>
-          <p>This won't take long.</p>
+          <p>This will not take long .</p>
         </div>
       </div>
     );
@@ -72,7 +72,7 @@ export default function PaymentSummary() {
     );
   }
 
-  const { success, price, shippingAddress } = data;
+  const { success, price } = data;
 
   return (
     <>

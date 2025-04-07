@@ -1,18 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../../../../../actions/product";
-import { Product } from "@prisma/client";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { IRootState } from "../../../../store";
 import { toggleFavourite } from "../../../../store/favouritesSlice";
 import { FaTrashAlt } from "react-icons/fa";
-
+import { CartItem } from "@/types";
 
 export default function FavouritePage() {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<CartItem[]>([]);
   const dispatch = useDispatch();
   const { likedProducts } = useSelector(
     (state: IRootState) => state.favourites

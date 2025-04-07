@@ -18,7 +18,6 @@ enum OrderStatus {
 
 model CartItem {
   id               String    @id @default(cuid())
-  name             String
   price            Float
   thumbnail        String
   qty              Int

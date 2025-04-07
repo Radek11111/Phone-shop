@@ -1,7 +1,7 @@
 "use client";
 import { IRootState } from "@/store";
 import {
-  CartItemRedux,
+  
   removeProductById,
   updateCart,
 } from "@/store/cartSlice";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import ShinyText from "@/components/ShinyText";
+import { CartItem } from "@/types";
 
 
 export default function Cart() {
@@ -39,7 +40,7 @@ export default function Cart() {
   };
 
   const subtotal = cart.reduce(
-    (accumulator: number, currentValue: CartItemRedux) =>
+    (accumulator: number, currentValue: CartItem) =>
       accumulator + currentValue.price * currentValue.qty,
     0
   );
@@ -66,13 +67,13 @@ export default function Cart() {
                 src={item.thumbnail}
                 width={150}
                 height={150}
-                alt={item.name}
+                alt={item.title}
                 className="rounded-lg"
               />
               <CardContent className="flex-1">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold">
-                    {item.name}
+                    {item.title}
                   </CardTitle>
                 </CardHeader>
                 <p className="text-gray-600">Price: ${item.price.toFixed(2)}</p>

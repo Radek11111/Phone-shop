@@ -1,20 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Product } from "@prisma/client";
+
 import Container from "@/components/Container";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, CartItemRedux, updateCart } from "@/store/cartSlice";
+import { addToCart, updateCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IRootState } from "@/store";
 import ShinyText from "@/components/ShinyText";
 import { m } from "framer-motion";
+import { CartItem } from "@/types";
 
-export default function ProductPage({ product }: { product: Product | null }) {
+export default function ProductPage({ product }: { product: CartItem | null }) {
   const cart = useSelector((state: IRootState) => state.cart);
   const [qty, setQty] = useState<number>(1);
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
 
   useEffect(() => {
     const cartItem = cart.cartItems.find(
-      (item: CartItemRedux) => item.id === product?.id
+      (item: CartItem) => item.id === product?.id
     );
     if (cartItem) {
       setQty(cartItem.qty);
@@ -47,10 +48,12 @@ export default function ProductPage({ product }: { product: Product | null }) {
       dispatch(
         addToCart({
           id: product.id,
-          name: product.title,
+          title: product.title,
+          name: product.name,
           price: product.price,
           thumbnail: product.thumbnail,
           qty,
+          description: product.description,
         })
       );
       toast.success("Product added to cart");
@@ -114,7 +117,7 @@ export default function ProductPage({ product }: { product: Product | null }) {
                   onClick={handleAddToCart}
                   className="relative px-10 py-6 font-bold text-2xl right-3 mt-11 text-white bg-gradient-to-r from-zinc-600 to-slate-600 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 >
-                  <ShinyText text="Add to Cart"  />
+                  <ShinyText text="Add to Cart" />
                   <span className="absolute inset-0 rounded-full opacity-0 hover:opacity-20 bg-white transition-opacity duration-300"></span>
                 </Button>
 

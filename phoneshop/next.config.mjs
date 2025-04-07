@@ -14,12 +14,6 @@ const nextConfig = {
       },
     ],
   },
-  securityHeaders: [
-    {
-      key: "Content-Security-Policy",
-      value: "script-src 'self' https://m.stripe.network 'unsafe-inline'",
-    },
-  ],
 };
 
 export default nextConfig;

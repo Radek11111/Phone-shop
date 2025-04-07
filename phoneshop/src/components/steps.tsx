@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
-import { cn } from '@/lib/utils';
-import React from 'react'
+import { cn } from "@/lib/utils";
+import React from "react";
 import { usePathname } from "next/navigation";
-import MaxWidthWrapper from "./MaxWidthWrapper";
-import Container from "./Container";
+import Image from "next/image";
 
 export const STEPS = [
   {
@@ -24,7 +23,7 @@ export const STEPS = [
   },
 ];
 
-export default function steps() {
+export default function Steps() {
   const pathname = usePathname();
 
   return (
@@ -54,7 +53,7 @@ export default function steps() {
               )}
             >
               <span className="flex-shrink-0">
-                <img
+                <Image
                   src={imgPath}
                   alt=""
                   className={cn(
@@ -104,4 +103,4 @@ export default function steps() {
       })}
     </ol>
   );
-};
+}

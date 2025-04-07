@@ -11,6 +11,7 @@ import { removeProductById } from "@/store/cartSlice";
 import ShinyText from "../ShinyText";
 
 export default function CartBar({
+ 
   openCartBar,
   setOpenCartBar,
 }: {
@@ -19,20 +20,19 @@ export default function CartBar({
 }) {
   const cart = useSelector((state: IRootState) => state.cart.cartItems);
   const dispatch = useDispatch();
-
   const handleRemoveItem = (item: { id: string }) => {
     dispatch(removeProductById(item.id));
   };
-
+  
   const totalPrice = cart
-    .reduce((total, item) => total + item.price * item.qty, 0)
-    .toFixed(2);
-
+  .reduce((total, item) => total + item.price * item.qty, 0)
+  .toFixed(2);
+  
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
     console.log("Koszyk w localStorage:", cart);
   }, [cart]);
-
+  
   return (
     <AnimatePresence>
       {openCartBar && (
@@ -76,7 +76,7 @@ export default function CartBar({
                   />
                   <div className="flex flex-col gap-1 flex-1">
                     <span className="capitalize text-sm font-medium text-gray-900">
-                      {item.name.substring(0, 30)}
+                      {item.title.substring(0, 30)}
                     </span>
                     <div className="inline-flex gap-4 font-bold text-gray-700">
                       <span>${item.price.toFixed(2)}</span>
