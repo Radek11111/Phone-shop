@@ -54,6 +54,8 @@ export default function Steps() {
             >
               <span className="flex-shrink-0">
                 <Image
+                width={80}
+                height={80}
                   src={imgPath}
                   alt=""
                   className={cn(

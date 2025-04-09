@@ -11,7 +11,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (!shipping) {
-      return NextResponse.json({ error: "Shipping details are required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Shipping details are required" },
+        { status: 400 }
+      );
     }
 
     const order = await db.orderDetails.create({
@@ -20,11 +23,10 @@ export async function POST(req: NextRequest) {
         status: "awaiting_payment",
         items: {
           create: items.map((item: any) => ({
-            name: item.name,
+            title: item.title,
             price: item.price,
             thumbnail: item.thumbnail || "",
             qty: item.qty,
-            title: item.name,
           })),
         },
         shippingAddress: {
@@ -48,6 +50,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ orderId: order.id }, { status: 201 });
   } catch (error) {
     console.error("Error creating order:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
