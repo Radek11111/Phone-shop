@@ -3,10 +3,15 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { SubmitHandler } from "react-hook-form";
 import { ShippingData, OrderData } from "@/types";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import "react-medium-image-zoom/dist/styles.css";
+import ShippingFormFields from "@/components/ShippingFormFields";
+import { ShippingFormData } from "@/validatos/shippingSchema";
 
 const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 if (!stripeKey) {
@@ -23,7 +28,6 @@ export default function OrderSummary() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
-  const sessionId = searchParams.get("session_id");
   const carrier = searchParams.get("carrier");
 
   useEffect(() => {
@@ -44,7 +48,6 @@ export default function OrderSummary() {
         setOrderData(response.data);
         setShippingData(response.data.shipping);
         setError(null);
-        console.log(response);
       } catch (err) {
         console.error("Błąd przy pobieraniu szczegółów zamówienia:", err);
         setError(
@@ -89,11 +92,11 @@ export default function OrderSummary() {
     }
   };
 
-  const saveEditedData = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const saveEditedData: SubmitHandler<ShippingFormData> = async (data) => {
     try {
       setLoading(true);
-      await axios.put(`/api/shipping/${orderId}`, shippingData);
+      await axios.put(`/api/shipping/${orderId}`, data);
+      setShippingData(data);
       setIsEditing(false);
     } catch (err) {
       setError("Nie udało się zapisać zmian. Spróbuj ponownie.");
@@ -128,14 +131,24 @@ export default function OrderSummary() {
               <h2 className="text-xl font-semibold mb-2">Produkty</h2>
               <div className="overflow-auto max-h-60 border p-4 rounded-md">
                 {orderData.items && orderData.items.length > 0 ? (
-                  orderData.items.map(({ id, name, qty, price }) => (
+                  orderData.items.map(({ id, name, qty, price, thumbnail }) => (
                     <div
                       key={id}
-                      className="flex justify-between border-b py-2"
+                      className="flex items-center justify-between border-b py-2"
                     >
-                      <p>
-                        {name} x {qty}
-                      </p>
+                      <div className="flex items-center gap-4">
+                        <Image
+                          alt="product"
+                          width={50}
+                          height={50}
+                          src={thumbnail}
+                          className="rounded-md object-cover transform transition-transform duration-300 scale-75 data-[zoomed=true]:scale-100"
+                        />
+
+                        <p>
+                          {name} x {qty}
+                        </p>
+                      </div>
                       <p>{(price * qty).toFixed(2)} USD</p>
                     </div>
                   ))
@@ -160,127 +173,12 @@ export default function OrderSummary() {
               </div>
 
               {isEditing && shippingData ? (
-                <form onSubmit={saveEditedData} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Imię i nazwisko
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.name || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          name: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Ulica
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.street || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          street: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Miasto
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.city || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          city: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Kod pocztowy
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.postalCode || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          postalCode: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Kraj
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.country || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          country: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Stan/Województwo (opcjonalnie)
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.state || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          state: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Numer telefonu (opcjonalnie)
-                    </label>
-                    <input
-                      type="text"
-                      value={shippingData.phoneNumber || ""}
-                      onChange={(e) =>
-                        setShippingData({
-                          ...shippingData,
-                          phoneNumber: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full p-2 border rounded"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600"
-                    disabled={loading}
-                  >
-                    {loading ? "Zapisywanie..." : "Zapisz"}
-                  </button>
-                </form>
+                <ShippingFormFields
+                  defaultValues={shippingData}
+                  onSubmit={saveEditedData}
+                  submitButtonText="Zapisz"
+                  isLoading={loading}
+                />
               ) : shippingData ? (
                 <div className="border p-4 rounded-md">
                   <p>{shippingData.name}</p>

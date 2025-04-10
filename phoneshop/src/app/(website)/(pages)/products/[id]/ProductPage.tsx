@@ -20,6 +20,7 @@ export default function ProductPage({ product }: { product: CartItem | null }) {
   const [qty, setQty] = useState<number>(1);
   const dispatch = useDispatch();
   const router = useRouter();
+ 
 
   useEffect(() => {
     const cartItem = cart.cartItems.find(
@@ -92,11 +93,11 @@ export default function ProductPage({ product }: { product: CartItem | null }) {
           <div className="flex flex-col md:flex-row items-center justify-center gap-12">
             {/* Obraz z efektem zoom */}
             <div className="relative w-full md:w-1/2 max-w-2xl">
-              <Zoom>
+              <Zoom zoomMargin={40}>
                 <img
                   src={product.thumbnail}
                   alt={product.title}
-                  className="rounded-xl shadow-2xl object-cover w-full transform transition-transform duration-300 hover:scale-105 bg-gradient-to-br from-gray-100 to-gray-200"
+                  className="rounded-xl shadow-2xl object-cover w-full transform transition-transform duration-300 scale-75 data-[zoomed=true]:scale-100 bg-gradient-to-br from-gray-100 to-gray-200"
                 />
               </Zoom>
             </div>

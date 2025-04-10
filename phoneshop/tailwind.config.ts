@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      data: {
+        zoomed: "zoomed=true",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -60,8 +63,8 @@ const config = {
       },
       keyframes: {
         shine: {
-          '0%': { 'background-position': '100%' },
-          '100%': { 'background-position': '-100%' },
+          "0%": { "background-position": "100%" },
+          "100%": { "background-position": "-100%" },
         },
         "fade-in": {
           from: {
