@@ -95,7 +95,7 @@ export default function OrderSummary() {
   const saveEditedData: SubmitHandler<ShippingFormData> = async (data) => {
     try {
       setLoading(true);
-      await axios.put(`/api/shipping/${orderId}`, data);
+      await axios.put(`/api/payment/${orderId}`, data);
       setShippingData(data);
       setIsEditing(false);
     } catch (err) {

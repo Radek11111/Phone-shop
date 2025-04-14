@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 
 import Container from "@/components/Container";
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,13 +13,13 @@ import { IRootState } from "@/store";
 import ShinyText from "@/components/ShinyText";
 import { m } from "framer-motion";
 import { CartItem } from "@/types";
+import Image from "next/image";
 
 export default function ProductPage({ product }: { product: CartItem | null }) {
   const cart = useSelector((state: IRootState) => state.cart);
   const [qty, setQty] = useState<number>(1);
   const dispatch = useDispatch();
   const router = useRouter();
- 
 
   useEffect(() => {
     const cartItem = cart.cartItems.find(
@@ -84,25 +83,23 @@ export default function ProductPage({ product }: { product: CartItem | null }) {
           transition={{ duration: 0.5 }}
           className="container mx-auto px-4 py-12"
         >
-          {/* Tytuł z gradientem */}
           <h1 className="text-4xl md:text-5xl font-extrabold mb-10 text-center bg-gradient-to-r from-zinc-600 via-zinc-500 to-slate-500 bg-clip-text text-transparent">
             {product.title}
           </h1>
 
-          {/* Główny kontener */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-12">
-            {/* Obraz z efektem zoom */}
             <div className="relative w-full md:w-1/2 max-w-2xl">
-              <Zoom zoomMargin={40}>
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="rounded-xl shadow-2xl object-cover w-full transform transition-transform duration-300 scale-75 data-[zoomed=true]:scale-100 bg-gradient-to-br from-gray-100 to-gray-200"
-                />
-              </Zoom>
+              <Image
+                src={product.thumbnail}
+                alt={product.title}
+                width={500}
+                height={500}
+                className="rounded-xl shadow-2xl object-cover w-full transform transition-transform duration-300 scale-75 bg-gradient-to-br from-gray-100 to-gray-200"
+                priority={false}
+                quality={75}
+              />
             </div>
 
-            {/* Opis, cena i przyciski */}
             <div className="flex-1 max-w-lg space-y-6 flex flex-col">
               <p className="text-lg text-gray-600 leading-relaxed text-center md:text-left">
                 {product.description}
@@ -111,9 +108,7 @@ export default function ProductPage({ product }: { product: CartItem | null }) {
                 ${product.price.toFixed(2)}
               </span>
 
-              {/* Sekcja przycisków */}
               <div className="flex flex-row items-center justify-center md:justify-end gap-4 mt-6">
-                {/* Przycisk "Add to Cart" */}
                 <Button
                   onClick={handleAddToCart}
                   className="relative px-10 py-6 font-bold text-2xl right-3 mt-11 text-white bg-gradient-to-r from-zinc-600 to-slate-600 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
@@ -122,7 +117,6 @@ export default function ProductPage({ product }: { product: CartItem | null }) {
                   <span className="absolute inset-0 rounded-full opacity-0 hover:opacity-20 bg-white transition-opacity duration-300"></span>
                 </Button>
 
-                {/* Licznik ilości */}
                 <div className="flex items-center gap-2 bg-gray-100 p-2 rounded-full shadow-md mt-11">
                   <Button
                     onClick={() => updateQty("dec")}
