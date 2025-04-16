@@ -4,11 +4,11 @@ import { db } from "@/db";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { orderId: string } }
+  { params }: { params: Promise<{ orderId: string }> }
 ) {
   try {
     const data = await req.json();
-    const { orderId } = params;
+    const { orderId } = await params;
 
     console.log("PUT request received for orderId:", orderId);
 
