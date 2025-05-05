@@ -31,7 +31,7 @@ export default function Shipping() {
         0
       );
 
-      const response = await axios.post("/api/order", {
+      const response = await axios.post("/api/orders", {
         items: cart,
         total,
         shipping: {
