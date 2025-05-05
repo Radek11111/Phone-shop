@@ -1,11 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
+const BASE_URL = "https://phone-shop-git-main-radek11111s-projects.vercel.app";
+
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-export default clerkMiddleware(async(auth, req) => {
-  if (isProtectedRoute(req)) await
-    auth.protect({
-      unauthenticatedUrl: process.env.NEXT_PUBLIC_SERVER_URL,
-      unauthorizedUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req))
+    await auth.protect({
+      unauthenticatedUrl: BASE_URL,
+      unauthorizedUrl: BASE_URL,
     });
 });
 
