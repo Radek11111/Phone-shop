@@ -49,6 +49,8 @@ export async function POST(req: NextRequest) {
     console.log("Zapisano zamówienie w bazie z ID:", order.id);
     return NextResponse.json({ orderId: order.id }, { status: 201 });
   } catch (error) {
+    console.error("DATABASE_URL in runtime:", process.env.DATABASE_URL);
+
     console.error("Error creating order:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
