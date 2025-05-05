@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="flex justify-start items-start py-4">
           <Image
             className="w-400 h-400"
-            src="/logo.svg"
+            src="/Logo.svg"
             alt="Logo"
             width={500}
             height={500}
