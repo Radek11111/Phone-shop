@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
         shippingAddress: true,
       },
     });
+    console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
     console.log("Zapisano zamówienie w bazie z ID:", order.id);
     return NextResponse.json({ orderId: order.id }, { status: 201 });
