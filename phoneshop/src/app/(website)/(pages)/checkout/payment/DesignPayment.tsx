@@ -74,13 +74,13 @@ export default function PaymentSummary() {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <Button onClick={() => router.back()} variant="ghost" className="mb-6">
         <ArrowLeft className="mr-2" />
-        Wróć
+        Back
       </Button>
 
-      <h1 className="text-3xl font-bold mb-4">Podsumowanie Zamówienia</h1>
+      <h1 className="text-3xl font-bold mb-4">Order Summary</h1>
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Produkty</h2>
+        <h2 className="text-xl font-semibold mb-2">Products</h2>
         <div className="border rounded-md p-4">
           {orderData?.items.map((item) => (
             <div key={item.id} className="flex justify-between py-2">
@@ -100,18 +100,18 @@ export default function PaymentSummary() {
           ))}
         </div>
         <p className="mt-4 text-lg font-semibold">
-          Łącznie: {orderData?.total.toFixed(2)} USD
+          Jointly: {orderData?.total.toFixed(2)} USD
         </p>
       </div>
 
       <div className="mb-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Dane Wysyłkowe</h2>
+          <h2 className="text-xl font-semibold">Shipping Details</h2>
           <button
             onClick={() => setIsEditing((prev) => !prev)}
             className="text-blue-600 underline"
           >
-            {isEditing ? "Anuluj" : "Edytuj"}
+            {isEditing ? "Cancel" : "Edit"}
           </button>
         </div>
 
@@ -119,7 +119,7 @@ export default function PaymentSummary() {
           <ShippingFormFields
             defaultValues={shippingData}
             onSubmit={saveEditedData}
-            submitButtonText="Zapisz"
+            submitButtonText="Save"
             isLoading={localLoading}
           />
         ) : (
@@ -132,7 +132,7 @@ export default function PaymentSummary() {
             <p>{shippingData?.country}</p>
             {shippingData?.state && <p>{shippingData.state}</p>}
             {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
-            <p>Przewoźnik: {carrier}</p>
+            <p>Carrier: {carrier}</p>
           </div>
         )}
       </div>
@@ -142,11 +142,7 @@ export default function PaymentSummary() {
         className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
         disabled={localLoading || isEditing || orderData?.isPaid}
       >
-        {localLoading
-          ? "Przetwarzanie..."
-          : orderData?.isPaid
-          ? "Opłacone"
-          : "Zapłać"}
+        {localLoading ? "Processing..." : orderData?.isPaid ? "Paid" : "Pay"}
       </button>
 
       {formError && <p className="text-red-500 mt-4">{formError}</p>}

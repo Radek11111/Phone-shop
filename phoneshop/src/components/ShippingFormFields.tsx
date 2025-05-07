@@ -29,7 +29,7 @@ export default function ShippingFormFields({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Imię i nazwisko
+            Name and surname
           </label>
           <input
             {...register("name")}
@@ -42,7 +42,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Ulica
+            Street
           </label>
           <input
             {...register("street")}
@@ -55,7 +55,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Miasto
+            City
           </label>
           <input
             {...register("city")}
@@ -68,7 +68,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Kod pocztowy
+            Zip code
           </label>
           <input
             {...register("postalCode")}
@@ -83,7 +83,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Kraj
+            Country
           </label>
           <input
             {...register("country")}
@@ -98,7 +98,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Stan/Województwo (opcjonalnie)
+            State/Province (optional)
           </label>
           <input
             {...register("state")}
@@ -108,7 +108,7 @@ export default function ShippingFormFields({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Numer telefonu (opcjonalnie)
+            Phone number (optional)
           </label>
           <input
             {...register("phoneNumber")}
