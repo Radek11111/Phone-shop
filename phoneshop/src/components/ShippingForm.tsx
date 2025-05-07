@@ -39,7 +39,7 @@ export default function ShippingForm({
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-slate-500 to-slate-600 px-6 py-4">
             <h1 className="text-2xl md:text-3xl font-bold text-white">
-              Dane Wysyłkowe
+              Shipping Details
             </h1>
           </div>
 
@@ -58,7 +58,7 @@ export default function ShippingForm({
 
             <div className="mt-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                Wybierz przewoźnika
+                Select carrier
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {CARRIERS.map((carrier) => (

@@ -6,7 +6,7 @@ const PaymentSummary = dynamic(() => import("./DesignPayment"), { ssr: false });
 
 export default function SummaryPage() {
   return (
-    <Suspense fallback={<p>Ładowanie strony zamówienia...</p>}>
+    <Suspense fallback={<p>Loading the order page...</p>}>
       <PaymentSummary />
     </Suspense>
   );

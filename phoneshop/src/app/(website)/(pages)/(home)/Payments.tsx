@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "./style.css";
+import "./payments.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { cn } from "@/lib/utils";
 import Container from "../../../../components/Container";
