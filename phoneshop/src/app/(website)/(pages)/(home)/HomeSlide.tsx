@@ -4,9 +4,6 @@ import Container from "../../../../components/Container";
 import { Skeleton } from "../../../../components/ui/skeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
-import { cn } from "@/lib/utils";
-
-// Typy dla Swiper, aby uniknąć błędów TS
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -20,19 +17,17 @@ const HomeSlide: React.FC = () => {
     "/mobile-phone-791644_1280.jpg",
   ];
 
-  // Obiekt określający pozycje tła dla każdego obrazu w widoku mobilnym
   const mobileBackgroundPositions: { [key: string]: string } = {
-    "/man-1868730_1280.jpg": "left 20% center", // Pierwsze zdjęcie: z lewej strony
-    "/mobile-phone-791644_1280.jpg": "center center", // Drugie zdjęcie: na środku
+    "/man-1868730_1280.jpg": "left 20% center",
+    "/mobile-phone-791644_1280.jpg": "center center",
   };
 
-  // Wykrywanie widoku mobilnego
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Próg dla urządzeń mobilnych
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    handleResize(); // Sprawdzenie przy pierwszym renderowaniu
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
