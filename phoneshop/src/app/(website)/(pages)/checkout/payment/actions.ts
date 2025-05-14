@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { OrderData, ShippingData } from "@/types";
 import { useDispatch } from "react-redux";
-import { resetOrder } from "@/store/orderSlice";
+import { clearCart } from "@/store/cartSlice";
 
 export function usePayment() {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -35,27 +35,29 @@ export function usePayment() {
         const sessionId = searchParams.get("session_id");
         if (success === "true" && sessionId) {
           const sessionResponse = await axios.get(
-            `/api/stripe/session/${sessionId}`);
-            const session = sessionResponse.data;
-            if(
-              session.payment_status === "paid" && session.metadata.orderId === orderId) {
-                dispatch(resetOrder());
-                console.log("Koszyk wyczyszczony po pomyślnym zamówieniu.");
-              }
-            
+            `/api/stripe/session/${sessionId}`
+          );
+          const session = sessionResponse.data;
+          if (
+            session.payment_status === "paid" &&
+            session.metadata.orderId === orderId
+          ) {
+            dispatch(clearCart());
+            console.log("Koszyk wyczyszczony po pomyślnym zamówieniu.");
+          }
         }
 
-        if(!response.data.isPaid && success === "true") {
+        if (!response.data.isPaid && success === "true") {
           console.log("isPaid is false, retrying in 2 seconds...");
-          setTimeout(async()=> {
+          setTimeout(async () => {
             const retryResponse = await axios.get(`/api/order/${orderId}`);
             setOrderData(retryResponse.data);
             setShippingData(retryResponse.data.shipping);
-            if(retryResponse.data.isPaid) {
-              dispatch(resetOrder());
+            if (retryResponse.data.isPaid) {
+              dispatch(clearCart());
               console.log("Koszyk wyczyszczony po pomyślnym zamówieniu.");
             }
-          } , 2000);
+          }, 2000);
         }
       } catch (err) {
         console.error("Fetch error:", err);
