@@ -71,81 +71,137 @@ export default function PaymentSummary() {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <Button onClick={() => router.back()} variant="ghost" className="mb-6">
-        <ArrowLeft className="mr-2" />
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
+      <Button
+        onClick={() => router.back()}
+        variant="ghost"
+        className="mb-6 text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
+      >
+        <ArrowLeft className="w-5 h-5 mr-2" />
         Back
       </Button>
 
-      <h1 className="text-3xl font-bold mb-4">Order Summary</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Order Summary</h1>
 
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Products</h2>
-        <div className="border rounded-md p-4">
-          {orderData?.items.map((item) => (
-            <div key={item.id} className="flex justify-between py-2">
-              <div className="flex items-center gap-2">
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Products</h2>
+        <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
+          {orderData?.items.map((item: any) => (
+            <div
+              key={item.id}
+              className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
+            >
+              <div className="flex items-center gap-4">
                 <Image
                   src={item.thumbnail}
-                  width={50}
-                  height={50}
-                  alt="thumb"
+                  width={60}
+                  height={60}
+                  alt={item.name}
+                  className="rounded-lg object-cover"
                 />
-                <span>
-                  {item.name} x {item.qty}
-                </span>
+                <div>
+                  <span className="text-gray-800 font-medium">{item.name}</span>
+                  <span className="text-gray-500 text-sm ml-2">
+                    x {item.qty}
+                  </span>
+                </div>
               </div>
-              <span>{(item.price * item.qty).toFixed(2)} USD</span>
+              <span className="text-gray-800 font-medium">
+                {(item.price * item.qty).toFixed(2)} USD
+              </span>
             </div>
           ))}
         </div>
-        <p className="mt-4 text-lg font-semibold">
-          Jointly: {orderData?.total.toFixed(2)} USD
+        <p className="mt-4 text-lg font-semibold text-gray-900 justify-end items-end flex">
+          Total:{" "}
+          <span className="text-slate-600">
+            {orderData?.total.toFixed(2)} USD
+          </span>
         </p>
       </div>
 
-      <div className="mb-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Shipping Details</h2>
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Shipping Details
+          </h2>
           <button
             onClick={() => setIsEditing((prev) => !prev)}
-            className="text-blue-600 underline"
+            className="text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200"
           >
             {isEditing ? "Cancel" : "Edit"}
           </button>
         </div>
 
         {isEditing && shippingData ? (
-          <ShippingFormFields
-            defaultValues={shippingData}
-            onSubmit={saveEditedData}
-            submitButtonText="Save"
-            isLoading={localLoading}
-          />
+          <div className="border border-gray-200 rounded-xl p-5 bg-white">
+            <ShippingFormFields
+              defaultValues={shippingData}
+              onSubmit={saveEditedData}
+              submitButtonText="Save"
+              isLoading={localLoading}
+            />
+          </div>
         ) : (
-          <div className="border rounded-md p-4 mt-2">
-            <p>{shippingData?.name}</p>
-            <p>{shippingData?.street}</p>
-            <p>
-              {shippingData?.city}, {shippingData?.postalCode}
-            </p>
-            <p>{shippingData?.country}</p>
-            {shippingData?.state && <p>{shippingData.state}</p>}
-            {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
-            <p>Carrier: {carrier}</p>
+          <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+              <p>
+                <span className="font-medium">Name:</span> {shippingData?.name}
+              </p>
+              <p>
+                <span className="font-medium">Street:</span>{" "}
+                {shippingData?.street}
+              </p>
+              <p>
+                <span className="font-medium">City:</span> {shippingData?.city},{" "}
+                {shippingData?.postalCode}
+              </p>
+              <p>
+                <span className="font-medium">Country:</span>{" "}
+                {shippingData?.country}
+              </p>
+              {shippingData?.state && (
+                <p>
+                  <span className="font-medium">State:</span>{" "}
+                  {shippingData?.state}
+                </p>
+              )}
+              {shippingData?.phoneNumber && (
+                <p>
+                  <span className="font-medium">Phone:</span>{" "}
+                  {shippingData?.phoneNumber}
+                </p>
+              )}
+              <p>
+                <span className="font-medium">Carrier:</span> {carrier}
+              </p>
+            </div>
           </div>
         )}
       </div>
 
       <button
         onClick={handlePayment}
-        className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
+        className="w-full bg-gray-600 text-white py-3 rounded-xl font-semibold hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
         disabled={localLoading || isEditing || orderData?.isPaid}
       >
-        {localLoading ? "Processing..." : orderData?.isPaid ? "Paid" : "Pay"}
+        {localLoading ? (
+          <div className="flex items-center justify-center gap-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+            Processing...
+          </div>
+        ) : orderData?.isPaid ? (
+          "Paid"
+        ) : (
+          "Pay Now"
+        )}
       </button>
 
-      {formError && <p className="text-red-500 mt-4">{formError}</p>}
+      {formError && (
+        <p className="mt-4 text-red-500 text-center font-medium bg-red-50 p-3 rounded-lg">
+          {formError}
+        </p>
+      )}
     </div>
   );
 }
