@@ -30,7 +30,10 @@ const orderSlice = createSlice({
         state.order = { ...state.order, ...action.payload };
       }
     },
-    resetOrder: () => initialState,
+    resetOrder: (state) => {
+      state.order = null; 
+      console.log("resetOrder invoked, state:", state.order); 
+    },
   },
 });
 

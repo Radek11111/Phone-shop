@@ -66,7 +66,7 @@ export function usePayment() {
     };
 
     fetchData();
-  }, [orderId, carrier]);
+  }, [orderId, carrier, searchParams, dispatch]);
 
   return {
     orderData,
