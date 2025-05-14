@@ -5,10 +5,12 @@ import { stripe } from "@/lib/createStripeCheckoutSession";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
-    const session = await stripe.checkout.sessions.retrieve(params.sessionId);
+    const { sessionId } = await params;
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
     return NextResponse.json(session);
   } catch (error) {
     console.error("Error retrieving session:", error);
