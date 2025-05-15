@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import Confetti from "react-confetti";
 import { usePayment } from "@/app/(website)/(pages)/checkout/payment/actions";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export default function Page() {
   return (
@@ -99,11 +101,15 @@ function SuccessContent() {
             Invoice details
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>Jan Kowalski</p>
-            <p>ul. Przykładowa 10</p>
-            <p>Warszawa, 00-001</p>
-            <p>Polska</p>
-            <p>NIP: 123-456-78-90</p>
+            <p>{shippingData?.name || "No data available"}</p>
+            <p>{shippingData?.street || "No data available"}</p>
+            <p>
+              {shippingData?.city || "No data available"},{" "}
+              {shippingData?.postalCode || "No data available"}
+            </p>
+            <p>{shippingData?.country || "No data available"}</p>
+            {shippingData?.state && <p>{shippingData.state}</p>}
+            {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
           </div>
         </div>
 
@@ -118,12 +124,16 @@ function SuccessContent() {
                 className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                    <span className="text-gray-500">Miniaturka</span>
-                  </div>
+                  <Image
+                    src={item.thumbnail}
+                    width={60}
+                    height={60}
+                    alt={item.name}
+                    className="rounded-lg object-cover"
+                  />
                   <div>
                     <p className="text-gray-800 font-medium">
-                      {item.title || "Produkt"}
+                      {item.title || "Product"}
                     </p>
                     <p className="text-gray-500 text-sm">x {item.qty}</p>
                   </div>
@@ -158,6 +168,7 @@ function SuccessContent() {
           onClick={() => (window.location.href = "/")}
         >
           <ArrowLeft className="mr-2 h-5 w-5" />
+          Back to shop
         </Button>
       </div>
     </div>
