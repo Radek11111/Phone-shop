@@ -1,25 +1,36 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { usePayment } from "@/app/(website)/(pages)/checkout/payment/actions"; 
-import { Button } from "@/components/ui/button"; 
+import React, { useEffect, useState } from "react";
+import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import Confetti from "react-confetti"; 
-
+import Confetti from "react-confetti";
+import { usePayment } from "@/app/(website)/(pages)/checkout/payment/actions";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center h-screen">
+          Loading...
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
+  );
+}
+
+function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const { orderData, shippingData, loading, error } = usePayment();
 
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
-  useEffect(() => setShowConfetti(true));
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (orderData?.isPaid && !showConfetti) {
       setShowConfetti(true);
-      const timer = setTimeout(() => setShowConfetti(false), 5000); 
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
       return () => clearTimeout(timer);
     }
   }, [orderData?.isPaid, showConfetti]);
@@ -35,7 +46,7 @@ export default function Page() {
   if (error || !orderData) {
     return (
       <div className="text-red-500 text-center mt-10">
-        {error || "Brak danych zamówienia."}
+        {error || "No order data available."}
       </div>
     );
   }
@@ -43,52 +54,48 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
-        
         <div
           aria-hidden="true"
           className="pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center"
         >
           <Confetti
-            run={showConfetti} 
-            numberOfPieces={200} 
-            width={window.innerWidth} 
+            run={showConfetti}
+            numberOfPieces={200}
+            width={window.innerWidth}
             height={window.innerHeight}
           />
         </div>
 
-        {/* Nagłówek */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Potwierdzenie</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Confirmation</h1>
           <p className="text-gray-600">
-            Numer zamówienia: {orderId || "Brak numeru"}
+            Order number: {orderId || "No order number"}
           </p>
           <p className="text-gray-500 text-sm">
-            Data złożenia zamówienia: {new Date().toLocaleDateString("pl-PL")}
+            Date order: {new Date().toLocaleDateString("pl-PL")}
           </p>
         </div>
 
-        {/* Adres dostawy */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Adres dostawy
+            Delivery address
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>{shippingData?.name || "Brak danych"}</p>
-            <p>{shippingData?.street || "Brak danych"}</p>
+            <p>{shippingData?.name || "No data available"}</p>
+            <p>{shippingData?.street || "No data available"}</p>
             <p>
-              {shippingData?.city || "Brak danych"},{" "}
-              {shippingData?.postalCode || "Brak danych"}
+              {shippingData?.city || "No data available"},{" "}
+              {shippingData?.postalCode || "No data available"}
             </p>
-            <p>{shippingData?.country || "Brak danych"}</p>
+            <p>{shippingData?.country || "No data available"}</p>
             {shippingData?.state && <p>{shippingData.state}</p>}
             {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
           </div>
         </div>
 
-        {/* Dane do faktury */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Dane do faktury
+            Invoice details
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <p>Jan Kowalski</p>
@@ -99,10 +106,9 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Zamawiane produkty */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Zamawiane produkty
+            Products ordered
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             {orderData.items.map((item) => (
@@ -112,7 +118,6 @@ export default function Page() {
               >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                    {/* Placeholder dla obrazu, zamień na Image */}
                     <span className="text-gray-500">Miniaturka</span>
                   </div>
                   <div>
@@ -128,7 +133,7 @@ export default function Page() {
               </div>
             ))}
             <p className="mt-4 text-lg font-semibold text-gray-900">
-              Razem:{" "}
+              Total:{" "}
               <span className="text-blue-600">
                 {orderData.total.toFixed(2)} PLN
               </span>
@@ -136,25 +141,22 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Metoda płatności i transportu */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Szczegóły płatności i transportu
+            Payment and shipping details
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>Metoda płatności: Płatność za pobraniem</p>
-            <p>Metoda transportu: Kurier DPD</p>
+            <p>Payment method: Cash on delivery</p>
+            <p>Shipping method: DPD Courier</p>
           </div>
         </div>
 
-        {/* Przycisk Wróć do sklepu */}
         <Button
           variant="default"
           className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors duration-200"
           onClick={() => (window.location.href = "/")}
         >
           <ArrowLeft className="mr-2 h-5 w-5" />
-          Wróć do sklepu
         </Button>
       </div>
     </div>
