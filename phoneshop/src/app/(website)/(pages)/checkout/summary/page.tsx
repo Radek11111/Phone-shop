@@ -26,7 +26,7 @@ export default function Page() {
 function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
-  const { orderData, shippingData, loading, error } = usePayment();
+  const { orderData, shippingData, loading, error, carrier } = usePayment();
 
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -158,7 +158,9 @@ function SuccessContent() {
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <p>Payment method: Cash on delivery</p>
-            <p>Shipping method: DPD Courier</p>
+            <p>
+              Shipping method: {carrier || "No carrier available"}
+            </p>
           </div>
         </div>
 
