@@ -27,8 +27,17 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const { orderData, shippingData, loading, error, carrier } = usePayment();
-
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (orderData?.isPaid && !showConfetti) {
@@ -37,22 +46,6 @@ function SuccessContent() {
       return () => clearTimeout(timer);
     }
   }, [orderData?.isPaid, showConfetti]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
-  }
-
-  if (error || !orderData) {
-    return (
-      <div className="text-red-500 text-center mt-10">
-        {error || "No order data available."}
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -118,7 +111,7 @@ function SuccessContent() {
             Products ordered
           </h2>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            {orderData.items.map((item) => (
+            {orderData?.items.map((item) => (
               <div
                 key={item.id}
                 className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
@@ -146,7 +139,7 @@ function SuccessContent() {
             <p className="mt-4 text-lg font-semibold text-gray-900">
               Total:{" "}
               <span className="text-blue-600">
-                {orderData.total.toFixed(2)} PLN
+                {orderData?.total.toFixed(2)} PLN
               </span>
             </p>
           </div>

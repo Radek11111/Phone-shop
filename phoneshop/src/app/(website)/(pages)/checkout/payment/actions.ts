@@ -33,7 +33,7 @@ export function usePayment() {
 
         const success = searchParams.get("success");
         const sessionId = searchParams.get("session_id");
-        if (success === "true" && sessionId) {
+        if (success === "true" && sessionId && response.data.isPaid) {
           const sessionResponse = await axios.get(
             `/api/stripe/session/${sessionId}`
           );
