@@ -27,9 +27,15 @@ export function usePayment() {
     const fetchData = async () => {
       try {
         setLoading(true);
+        console.log("Fetching order with ID:", orderId);
         const response = await axios.get(`/api/order/${orderId}`);
+        console.log("API response:", response.data);
+
+        if (!response.data || !response.data.id) {
+          throw new Error("Nieprawidłowe dane zamówienia");
+        }
         setOrderData(response.data);
-        setShippingData(response.data.shipping);
+        setShippingData(response.data.shipping || null);
 
         const success = searchParams.get("success");
         const sessionId = searchParams.get("session_id");
@@ -37,6 +43,7 @@ export function usePayment() {
           const sessionResponse = await axios.get(
             `/api/stripe/session/${sessionId}`
           );
+          console.log("Session response:", sessionResponse.data);
           const session = sessionResponse.data;
           if (
             session.payment_status === "paid" &&
@@ -51,6 +58,7 @@ export function usePayment() {
           console.log("isPaid is false, retrying in 2 seconds...");
           setTimeout(async () => {
             const retryResponse = await axios.get(`/api/order/${orderId}`);
+            console.log("Retry API response:", retryResponse.data);
             setOrderData(retryResponse.data);
             setShippingData(retryResponse.data.shipping);
             if (retryResponse.data.isPaid) {

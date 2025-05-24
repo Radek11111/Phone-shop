@@ -31,6 +31,7 @@ function SuccessContent() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
+    
     if (typeof window !== "undefined") {
       setDimensions({
         width: window.innerWidth,
@@ -40,12 +41,21 @@ function SuccessContent() {
   }, []);
 
   useEffect(() => {
+    console.log(
+      "orderData.isPaid:",
+      orderData?.isPaid,
+      "showConfetti:",
+      showConfetti
+    );
     if (orderData?.isPaid && !showConfetti) {
       setShowConfetti(true);
       const timer = setTimeout(() => setShowConfetti(false), 5000);
       return () => clearTimeout(timer);
     }
-  }, [orderData?.isPaid, showConfetti]);
+  }, [orderData, showConfetti]);
+
+  if (loading) return <p>Ładowanie...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -132,7 +142,7 @@ function SuccessContent() {
                   </div>
                 </div>
                 <p className="text-gray-800 font-medium">
-                  {(item.price * item.qty).toFixed(2)} PLN
+                  {(item.price * item.qty).toFixed(2)} USD
                 </p>
               </div>
             ))}

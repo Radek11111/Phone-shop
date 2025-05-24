@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { orderId } = await params;
-
+    console.log("Fetching order with ID:", orderId);
     const order = await db.orderDetails.findUnique({
       where: { id: orderId },
       include: {
@@ -16,7 +16,7 @@ export async function GET(
         shippingAddress: true,
       },
     });
-
+    console.log("Database query result:", order);
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
