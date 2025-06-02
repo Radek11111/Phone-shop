@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
       data: {
         total,
         status: "awaiting_payment",
+        isPaid: false,
+        orderId: `order_${Date.now()}`,
         items: {
           create: items.map((item: any) => ({
             title: item.title,

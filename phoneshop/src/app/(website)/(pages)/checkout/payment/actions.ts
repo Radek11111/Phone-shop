@@ -19,7 +19,8 @@ export function usePayment() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!orderId || !carrier) {
+    console.log("searchParams:", { orderId, carrier,  });
+    if (!orderId) {
       setError("Brak wymaganych parametrów.");
       return;
     }
@@ -27,48 +28,68 @@ export function usePayment() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        console.log("Fetching order with ID:", orderId);
+        console.log("Pobieranie danych zamówienia dla ID:", orderId);
         const response = await axios.get(`/api/order/${orderId}`);
-        console.log("API response:", response.data);
+        
 
         if (!response.data || !response.data.id) {
           throw new Error("Nieprawidłowe dane zamówienia");
         }
-        setOrderData(response.data);
+
+        
+        const order = {
+          ...response.data,
+          isPaid: response.data.isPaid ?? false, 
+          items: response.data.items || [], 
+        };
+
+        setOrderData(order);
         setShippingData(response.data.shipping || null);
 
         const success = searchParams.get("success");
         const sessionId = searchParams.get("session_id");
-        if (success === "true" && sessionId && response.data.isPaid) {
-          const sessionResponse = await axios.get(
-            `/api/stripe/session/${sessionId}`
-          );
-          console.log("Session response:", sessionResponse.data);
-          const session = sessionResponse.data;
-          if (
-            session.payment_status === "paid" &&
-            session.metadata.orderId === orderId
-          ) {
-            dispatch(clearCart());
-            console.log("Koszyk wyczyszczony po pomyślnym zamówieniu.");
+        if (success === "true" && sessionId) {
+          try {
+            const sessionResponse = await axios.get(
+              `/api/stripe/session/${sessionId}`
+            );
+            console.log("Odpowiedź sesji Stripe:", sessionResponse.data);
+            const session = sessionResponse.data;
+            if (
+              session.payment_status === "paid" &&
+              session.metadata.orderId === orderId
+            ) {
+           
+              await axios.put(`/api/order/${orderId}`, { isPaid: true });
+              setOrderData((prev) => (prev ? { ...prev, isPaid: true } : prev));
+              dispatch(clearCart());
+             
+            }
+          } catch (err) {
+            console.error("Błąd sesji Stripe:", err);
+            setError("Nie udało się zweryfikować płatności.");
           }
         }
 
-        if (!response.data.isPaid && success === "true") {
-          console.log("isPaid is false, retrying in 2 seconds...");
+        if (!order.isPaid && success === "true") {
+          console.log("isPaid jest false, ponawianie za 2 sekundy...");
           setTimeout(async () => {
             const retryResponse = await axios.get(`/api/order/${orderId}`);
-            console.log("Retry API response:", retryResponse.data);
-            setOrderData(retryResponse.data);
-            setShippingData(retryResponse.data.shipping);
-            if (retryResponse.data.isPaid) {
+            console.log("Ponowna odpowiedź API:", retryResponse.data);
+            const retryOrder = {
+              ...retryResponse.data,
+              isPaid: retryResponse.data.isPaid ?? false,
+            };
+            setOrderData(retryOrder);
+            setShippingData(retryResponse.data.shipping || null);
+            if (retryOrder.isPaid) {
               dispatch(clearCart());
               console.log("Koszyk wyczyszczony po pomyślnym zamówieniu.");
             }
           }, 2000);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error("Błąd pobierania danych:", err);
         setError("Nie udało się załadować danych zamówienia.");
       } finally {
         setLoading(false);

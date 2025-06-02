@@ -26,12 +26,12 @@ export default function Page() {
 function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
-  const { orderData, shippingData, loading, error, carrier } = usePayment();
+  const { orderData, shippingData, loading, error, carrier} = usePayment();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [showConfetti, setShowConfetti] = useState(false);
 
+
   useEffect(() => {
-    
     if (typeof window !== "undefined") {
       setDimensions({
         width: window.innerWidth,
@@ -41,12 +41,6 @@ function SuccessContent() {
   }, []);
 
   useEffect(() => {
-    console.log(
-      "orderData.isPaid:",
-      orderData?.isPaid,
-      "showConfetti:",
-      showConfetti
-    );
     if (orderData?.isPaid && !showConfetti) {
       setShowConfetti(true);
       const timer = setTimeout(() => setShowConfetti(false), 5000);
@@ -59,7 +53,105 @@ function SuccessContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
+      <div className="max-w-5xl mx-auto p-6 bg-white rounded-2xl shadow-lg flex">
+        <div className="w-1/2 pr-6">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Thank you for placing your order
+            </h1>
+            <p className="text-gray-600">
+              Order number: {orderId || "No order number"}
+            </p>
+            <p className="text-gray-500 text-sm">
+              Date order: {new Date().toLocaleDateString("pl-PL")}
+            </p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Delivery address
+            </h2>
+            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <p>{shippingData?.name || "No data available"}</p>
+              <p>{shippingData?.street || "No data available"}</p>
+              <p>
+                {shippingData?.city || "No data available"},{" "}
+                {shippingData?.postalCode || "No data available"}
+              </p>
+              <p>{shippingData?.country || "No data available"}</p>
+              {shippingData?.state && <p>{shippingData.state}</p>}
+              {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Invoice details
+            </h2>
+            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <p>{shippingData?.name || "No data available"}</p>
+              <p>{shippingData?.street || "No data available"}</p>
+              <p>
+                {shippingData?.city || "No data available"},{" "}
+                {shippingData?.postalCode || "No data available"}
+              </p>
+              <p>{shippingData?.country || "No data available"}</p>
+              {shippingData?.state && <p>{shippingData.state}</p>}
+              {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Payment and shipping details
+            </h2>
+            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <p>Payment method: Cash on delivery</p>
+              <p>Shipping method: {carrier || "No carrier available"}</p>
+              <p>Status płatności: {orderData?.isPaid ? "Paid" : "Not paid"}</p>
+            </div>
+          </div>
+        </div>
+        <div className="w-1/2 pl-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Products ordered
+            </h2>
+            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              {orderData?.items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
+                >
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={item.thumbnail}
+                      width={60}
+                      height={60}
+                      alt={item.name || "Product image"}
+                      className="rounded-lg object-cover"
+                    />
+                    <div>
+                      <p className="text-gray-800 font-medium">
+                        {item.title || "Product"}
+                      </p>
+                      <p className="text-gray-500 text-sm">x {item.qty}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-800 font-medium">
+                    {(item.price * item.qty).toFixed(2)} USD
+                  </p>
+                </div>
+              ))}
+              <p className="mt-4 text-lg font-semibold text-gray-900 justify-end flex">
+                Total:{" "}
+                <span className="text-slate-600">
+                  {orderData?.total.toFixed(2)} USD
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
         <div
           aria-hidden="true"
           className="pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center"
@@ -67,106 +159,13 @@ function SuccessContent() {
           <Confetti
             run={showConfetti}
             numberOfPieces={200}
-            width={window.innerWidth}
-            height={window.innerHeight}
+            width={dimensions.width}
+            height={dimensions.height}
+            recycle={false}
           />
         </div>
-
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Confirmation</h1>
-          <p className="text-gray-600">
-            Order number: {orderId || "No order number"}
-          </p>
-          <p className="text-gray-500 text-sm">
-            Date order: {new Date().toLocaleDateString("pl-PL")}
-          </p>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Delivery address
-          </h2>
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>{shippingData?.name || "No data available"}</p>
-            <p>{shippingData?.street || "No data available"}</p>
-            <p>
-              {shippingData?.city || "No data available"},{" "}
-              {shippingData?.postalCode || "No data available"}
-            </p>
-            <p>{shippingData?.country || "No data available"}</p>
-            {shippingData?.state && <p>{shippingData.state}</p>}
-            {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Invoice details
-          </h2>
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>{shippingData?.name || "No data available"}</p>
-            <p>{shippingData?.street || "No data available"}</p>
-            <p>
-              {shippingData?.city || "No data available"},{" "}
-              {shippingData?.postalCode || "No data available"}
-            </p>
-            <p>{shippingData?.country || "No data available"}</p>
-            {shippingData?.state && <p>{shippingData.state}</p>}
-            {shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Products ordered
-          </h2>
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            {orderData?.items.map((item) => (
-              <div
-                key={item.id}
-                className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
-              >
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={item.thumbnail}
-                    width={60}
-                    height={60}
-                    alt={item.name}
-                    className="rounded-lg object-cover"
-                  />
-                  <div>
-                    <p className="text-gray-800 font-medium">
-                      {item.title || "Product"}
-                    </p>
-                    <p className="text-gray-500 text-sm">x {item.qty}</p>
-                  </div>
-                </div>
-                <p className="text-gray-800 font-medium">
-                  {(item.price * item.qty).toFixed(2)} USD
-                </p>
-              </div>
-            ))}
-            <p className="mt-4 text-lg font-semibold text-gray-900">
-              Total:{" "}
-              <span className="text-blue-600">
-                {orderData?.total.toFixed(2)} PLN
-              </span>
-            </p>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Payment and shipping details
-          </h2>
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <p>Payment method: Cash on delivery</p>
-            <p>
-              Shipping method: {carrier || "No carrier available"}
-            </p>
-          </div>
-        </div>
-
+      </div>
+      <div className="mt-6">
         <Button
           variant="default"
           className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors duration-200"
