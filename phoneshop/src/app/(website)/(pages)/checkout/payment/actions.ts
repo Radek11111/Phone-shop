@@ -19,7 +19,7 @@ export function usePayment() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("searchParams:", { orderId, carrier,  });
+    console.log("searchParams:", { orderId, carrier });
     if (!orderId) {
       setError("Brak wymaganych parametrów.");
       return;
@@ -30,17 +30,15 @@ export function usePayment() {
         setLoading(true);
         console.log("Pobieranie danych zamówienia dla ID:", orderId);
         const response = await axios.get(`/api/order/${orderId}`);
-        
 
         if (!response.data || !response.data.id) {
           throw new Error("Nieprawidłowe dane zamówienia");
         }
 
-        
         const order = {
           ...response.data,
-          isPaid: response.data.isPaid ?? false, 
-          items: response.data.items || [], 
+          isPaid: response.data.isPaid ?? false,
+          items: response.data.items || [],
         };
 
         setOrderData(order);
@@ -59,11 +57,9 @@ export function usePayment() {
               session.payment_status === "paid" &&
               session.metadata.orderId === orderId
             ) {
-           
-              await axios.put(`/api/order/${orderId}`, { isPaid: true });
+              await axios.put(`/api/payment/${orderId}`, { isPaid: true });
               setOrderData((prev) => (prev ? { ...prev, isPaid: true } : prev));
               dispatch(clearCart());
-             
             }
           } catch (err) {
             console.error("Błąd sesji Stripe:", err);
