@@ -97,7 +97,7 @@ export default function PaymentSummary() {
                     src={item.thumbnail}
                     width={60}
                     height={60}
-                    alt={item.name}
+                    alt="product image"
                     className="rounded-lg object-cover"
                   />
                   <div>

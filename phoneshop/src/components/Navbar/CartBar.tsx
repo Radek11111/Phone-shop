@@ -52,7 +52,7 @@ export default function CartBar({
           }}
           className={cn(
             "absolute top-[59px] w-[370px] right-[-20px] h-fit bg-gradient-to-br from-white/90 to-gray-100/90 backdrop-blur-md z-[9999] p-6 rounded-2xl shadow-xl border border-gray-200/50",
-            "sm:w-[400px] sm:right-0" 
+            "sm:w-[400px] sm:right-0"
           )}
         >
           <p className="text-center text-lg font-semibold text-gray-800">
@@ -118,6 +118,7 @@ export default function CartBar({
             <Link
               href="/cart"
               className="rounded-full py-3 flex justify-center bg-gradient-to-r from-zinc-600 to-zinc-600 text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+              onClick={() => setOpenCartBar(false)}
             >
               <ShinyText text="View Cart" />
             </Link>

@@ -14,7 +14,9 @@ import { toggleFavourite } from "../../../../store/favouritesSlice";
 export default function StorePage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
-  const likedProducts = useSelector((state: IRootState) => state.favourites.likedProducts);
+  const likedProducts = useSelector(
+    (state: IRootState) => state.favourites.likedProducts
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
@@ -64,6 +66,7 @@ export default function StorePage() {
       <div className="flex flex-wrap gap-6 justify-center mt-8">
         {paginatedProducts.map((item: Product) => (
           <div
+            onClick={() => router.push(`/products/${item.id}`)}
             key={item.id}
             className="group relative cursor-pointer flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-shadow bg-white h-64 w-96"
           >
@@ -83,7 +86,6 @@ export default function StorePage() {
               width={100}
               className="transition-transform duration-300 ease-in-out group-hover:scale-110"
               alt={item.title}
-              onClick={() => router.push(`/products/${item.id}`)}
             />
             <h3 className="text-slate-800 mb-1 mt-4 text-center">
               {item.title}

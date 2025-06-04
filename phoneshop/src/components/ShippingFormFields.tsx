@@ -1,31 +1,21 @@
 "use client";
 import { ShippingFormData, shippingSchema } from "@/validatos/shippingSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export interface ShippingFormFieldsProps {
   defaultValues?: ShippingFormData;
-  onSubmit: SubmitHandler<ShippingFormData>;
-  submitButtonText: string;
-  isLoading: boolean;
+  register: any;
+  errors: any;
 }
 
 export default function ShippingFormFields({
   defaultValues,
-  onSubmit,
-  submitButtonText,
-  isLoading,
+  register,
+  errors,
 }: ShippingFormFieldsProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ShippingFormData>({
-    resolver: zodResolver(shippingSchema),
-    defaultValues,
-  });
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -116,20 +106,6 @@ export default function ShippingFormFields({
           />
         </div>
       </div>
-
-      <div className="pt-4">
-        <button
-          type="submit"
-          className={`w-full px-6 py-3 rounded-lg font-medium text-white transition-all duration-200 ${
-            isLoading
-              ? "bg-zinc-400 cursor-not-allowed"
-              : "bg-zinc-600 hover:bg-zinc-700 shadow-md hover:shadow-lg"
-          }`}
-          disabled={isLoading}
-        >
-          {isLoading ? "Przetwarzanie..." : submitButtonText}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
