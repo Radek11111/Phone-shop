@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ShippingFormData } from "@/validatos/shippingSchema";
-import { SubmitHandler } from "react-hook-form";
+import { ShippingFormData, shippingSchema } from "@/validatos/shippingSchema";
+import { SubmitHandler, useForm } from "react-hook-form";
 import ShippingFormFields from "@/components/ShippingFormFields";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -10,6 +10,7 @@ import Image from "next/image";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { usePayment } from "./actions";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -30,6 +31,15 @@ export default function PaymentSummary() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ShippingFormData>({
+    resolver: zodResolver(shippingSchema),
+    defaultValues: shippingData || undefined,
+  });
 
   const handlePayment = async () => {
     try {
@@ -140,14 +150,29 @@ export default function PaymentSummary() {
         </div>
 
         {isEditing && shippingData ? (
-          <div className="border border-gray-200 rounded-xl p-5 bg-white">
+          <form
+            onSubmit={handleSubmit(saveEditedData)}
+            className="border border-gray-200 rounded-xl p-5 bg-white"
+          >
             <ShippingFormFields
               defaultValues={shippingData}
-              onSubmit={saveEditedData}
-              submitButtonText="Save"
-              isLoading={localLoading}
+              register={register}
+              errors={errors}
             />
-          </div>
+            <div className="pt-6">
+              <button
+                type="submit"
+                className={`w-full px-6 py-3 rounded-lg font-medium text-white transition-all duration-200 ${
+                  localLoading
+                    ? "bg-zinc-400 cursor-not-allowed"
+                    : "bg-zinc-600 hover:bg-zinc-700 shadow-md hover:shadow-lg"
+                }`}
+                disabled={localLoading}
+              >
+                {localLoading ? "Processing..." : "Save"}
+              </button>
+            </div>
+          </form>
         ) : (
           <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">

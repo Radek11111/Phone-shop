@@ -1,7 +1,5 @@
 "use client";
-import { ShippingFormData, shippingSchema } from "@/validatos/shippingSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { ShippingFormData } from "@/validatos/shippingSchema";
 
 export interface ShippingFormFieldsProps {
   defaultValues?: ShippingFormData;
@@ -10,7 +8,6 @@ export interface ShippingFormFieldsProps {
 }
 
 export default function ShippingFormFields({
-  defaultValues,
   register,
   errors,
 }: ShippingFormFieldsProps) {
